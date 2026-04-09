@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estrategia de Plataforma — Aeroméxico TDD-AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   AEROMÉXICO DESIGN SYSTEM
+   Navy: #021B3A  Magenta: #E6195A
+   Blue accent: #0057B8  Light: #F0F4FA
+═══════════════════════════════════════ */
+:root {
+  --navy:     #021B3A;
+  --navy2:    #03254F;
+  --navy3:    #0A3566;
+  --magenta:  #E6195A;
+  --magenta2: #C4144D;
+  --blue:     #0057B8;
+  --blue2:    #0068DE;
+  --white:    #FFFFFF;
+  --light:    #F0F4FA;
+  --light2:   #D8E4F5;
+  --muted:    #7A97C0;
+  --border:   rgba(0,87,184,0.2);
+  --border2:  rgba(0,87,184,0.12);
+  --text:     #021B3A;
+
+  /* Diagram layer colors */
+  --mesh-fill:   #E8F4ED;
+  --mesh-stroke: #2E8B57;
+  --mesh-text:   #1A5C38;
+  --api-fill:    #E3EEF9;
+  --api-stroke:  #0057B8;
+  --api-text:    #003A7A;
+  --ai-fill:     #EEE8F8;
+  --ai-stroke:   #7B3FA0;
+  --ai-text:     #4A1A6E;
+  --ml-fill:     #FFF4E0;
+  --ml-stroke:   #C47F00;
+  --ml-text:     #7A4F00;
+  --saas-fill:   #E3EEF9;
+  --saas-stroke: #0068DE;
+  --shared-fill: #F5F5F5;
+  --shared-stroke:#888;
+  --cons-fill:   #FEE8EE;
+  --cons-stroke: #E6195A;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--light);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+/* ── TOP HEADER ── */
+.topbar {
+  background: var(--navy);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  border-bottom: 3px solid var(--magenta);
+}
+.topbar-brand {
+  display: flex; align-items: center; gap: 12px;
+}
+.amx-logo {
+  width: 36px; height: 36px;
+  background: var(--magenta);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; color: white;
+}
+.topbar-brand h1 {
+  color: white; font-size: 16px; font-weight: 700; letter-spacing: 0.5px;
+}
+.topbar-brand span {
+  color: var(--muted); font-size: 12px; font-weight: 400; display: block; margin-top: 1px;
+}
+.topbar-badge {
+  background: var(--magenta);
+  color: white; font-size: 11px; font-weight: 600;
+  padding: 4px 12px; border-radius: 100px;
+  letter-spacing: 0.5px;
+}
+
+/* ── TABS ── */
+.tab-bar {
+  background: var(--navy2);
+  display: flex;
+  padding: 0 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  position: sticky; top: 0; z-index: 100;
+}
+.tab-btn {
+  padding: 14px 24px;
+  font-size: 13px; font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  border: none; background: none;
+  font-family: 'Inter', sans-serif;
+  border-bottom: 2px solid transparent;
+  transition: all .2s;
+}
+.tab-btn:hover { color: white; }
+.tab-btn.active {
+  color: white;
+  border-bottom-color: var(--magenta);
+}
+
+/* ── SECTIONS ── */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── PAGE INNER ── */
+.page-inner { padding: 32px 40px 60px; }
+
+.page-title-row {
+  display: flex; align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap; gap: 16px;
+}
+.page-title h2 {
+  font-size: 24px; font-weight: 700; color: var(--navy);
+  margin-bottom: 4px;
+}
+.page-title p { font-size: 13px; color: #5A7A9E; }
+.meta-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.meta-pill {
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 11px; font-weight: 600;
+  border: 1.5px solid;
+  display: flex; align-items: center; gap: 6px;
+}
+.pill-mesh   { border-color: var(--mesh-stroke); color: var(--mesh-text); background: var(--mesh-fill); }
+.pill-api    { border-color: var(--api-stroke);  color: var(--api-text);  background: var(--api-fill); }
+.pill-ai     { border-color: var(--ai-stroke);   color: var(--ai-text);   background: var(--ai-fill); }
+.pill-ml     { border-color: var(--ml-stroke);   color: var(--ml-text);   background: var(--ml-fill); }
+
+/* ═══════════════════════════════════
+   DIAGRAM STYLES
+═══════════════════════════════════ */
+.diag-section-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Label strip before each row */
+.row-label-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+.row-label-strip span {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.8px; text-transform: uppercase;
+  color: var(--muted);
+}
+.row-label-strip::before {
+  content: '';
+  width: 4px; height: 16px;
+  border-radius: 2px;
+  background: var(--c, var(--muted));
+  display: block;
+}
+.row-label-strip::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: linear-gradient(to right, var(--c, #ccc), transparent);
+  opacity: 0.3;
+}
+
+/* Block containers */
+.diag-block {
+  border-radius: 10px;
+  border: 1.5px solid;
+  padding: 14px 16px;
+  position: relative;
+}
+.diag-block-title {
+  font-size: 12px; font-weight: 700;
+  margin-bottom: 4px;
+}
+.diag-block-sub {
+  font-size: 11px; font-weight: 400;
+  opacity: 0.75;
+  line-height: 1.5;
+}
+
+/* Color themes for blocks */
+.b-saas   { background: var(--saas-fill);   border-color: var(--saas-stroke); color: var(--api-text); }
+.b-mesh   { background: var(--mesh-fill);   border-color: var(--mesh-stroke); color: var(--mesh-text); }
+.b-api    { background: var(--api-fill);    border-color: var(--api-stroke);  color: var(--api-text); }
+.b-ai     { background: var(--ai-fill);     border-color: var(--ai-stroke);   color: var(--ai-text); }
+.b-ml     { background: var(--ml-fill);     border-color: var(--ml-stroke);   color: var(--ml-text); }
+.b-shared { background: var(--shared-fill); border-color: var(--shared-stroke);color: #444; }
+.b-cons   { background: var(--cons-fill);   border-color: var(--cons-stroke); color: #7A0028; }
+.b-navy   { background: var(--navy2);       border-color: var(--navy3);       color: white; }
+
+/* ── SAAS ROW ── */
+.saas-row {
+  background: var(--api-fill);
+  border: 1.5px solid var(--api-stroke);
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.saas-row-label {
+  font-size: 11px; font-weight: 700; color: var(--api-text);
+  text-transform: uppercase; letter-spacing: 0.8px;
+  white-space: nowrap; margin-right: 4px;
+}
+.saas-row-sub { font-size: 10px; color: var(--muted); display: block; margin-top: 1px; }
+.saas-pill {
+  background: white;
+  border: 1.5px solid var(--api-stroke);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 11px; font-weight: 600; color: var(--api-text);
+  text-align: center; min-width: 110px;
+}
+.saas-pill span { display: block; font-size: 10px; font-weight: 400; color: var(--muted); margin-top: 1px; }
+
+/* ── PRODUCER DOMAIN CONTAINER ── */
+.producer-container {
+  background: rgba(232,244,237,0.5);
+  border: 2px solid var(--mesh-stroke);
+  border-radius: 14px;
+  padding: 16px;
+}
+.producer-header {
+  margin-bottom: 14px;
+}
+.producer-header h3 {
+  font-size: 13px; font-weight: 700; color: var(--mesh-text);
+  margin-bottom: 2px;
+}
+.producer-header p { font-size: 11px; color: #5A8A6A; }
+
+.verticals-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+.vertical-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(2,27,58,0.06);
+}
+.vertical-header {
+  background: var(--navy);
+  color: white;
+  padding: 8px 10px;
+  font-size: 11px; font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+}
+.vertical-header span {
+  display: block; font-weight: 400; font-size: 10px; opacity: 0.8; margin-top: 1px;
+}
+.vertical-mesh-layer {
+  background: var(--mesh-fill);
+  border-bottom: 1px solid rgba(46,139,87,0.2);
+  padding: 8px 10px;
+}
+.vertical-mesh-layer .layer-label {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  color: var(--mesh-stroke); letter-spacing: 0.5px; margin-bottom: 3px;
+}
+.vertical-mesh-layer .layer-items {
+  font-size: 9.5px; color: var(--mesh-text); line-height: 1.6;
+}
+.vertical-api-layer {
+  background: var(--api-fill);
+  padding: 8px 10px;
+}
+.vertical-api-layer .layer-label {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  color: var(--api-stroke); letter-spacing: 0.5px; margin-bottom: 3px;
+}
+.vertical-api-layer .layer-items {
+  font-size: 9.5px; color: var(--api-text); line-height: 1.6;
+}
+
+/* ── IA + ML ROW ── */
+.ia-ml-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 340px;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.ia-container {
+  background: rgba(238,232,248,0.5);
+  border: 2px solid var(--ai-stroke);
+  border-radius: 14px;
+  padding: 14px;
+  grid-column: span 2;
+}
+.ia-container-header {
+  margin-bottom: 12px;
+}
+.ia-container-header h3 {
+  font-size: 13px; font-weight: 700; color: var(--ai-text); margin-bottom: 1px;
+}
+.ia-container-header p { font-size: 10px; color: #7B5AA0; }
+
+.ia-accounts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-items: stretch;
+}
+.ia-account-card {
+  background: white;
+  border: 1px solid rgba(123,63,160,0.3);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.ia-account-header {
+  background: var(--ai-stroke);
+  color: white;
+  padding: 8px 12px;
+  font-size: 11px; font-weight: 700;
+  text-align: center; line-height: 1.3;
+}
+.ia-account-header span { display: block; font-weight: 400; font-size: 10px; opacity: 0.85; margin-top: 1px; }
+.ia-account-body {
+  padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.ia-item {
+  background: var(--ai-fill);
+  border: 1px solid rgba(123,63,160,0.2);
+  border-radius: 5px;
+  padding: 5px 9px;
+  font-size: 10px; color: var(--ai-text); font-weight: 500;
+  text-align: center;
+}
+
+/* MCP badge between ia accounts */
+.mcp-badge-wrap {
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.mcp-badge {
+  position: absolute;
+  background: var(--ai-stroke);
+  color: white;
+  font-size: 9px; font-weight: 700;
+  padding: 3px 8px; border-radius: 100px;
+  z-index: 2;
+  letter-spacing: 0.5px;
+}
+.mcp-line {
+  width: 100%; height: 2px;
+  background: rgba(123,63,160,0.3);
+  border-radius: 1px;
+}
+
+/* ML card */
+.ml-card {
+  background: white;
+  border: 2px solid var(--ml-stroke);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.ml-card-header {
+  background: var(--ml-stroke);
+  color: white;
+  padding: 12px 14px;
+  text-align: center;
+}
+.ml-card-header h3 { font-size: 12px; font-weight: 700; }
+.ml-card-header span { font-size: 10px; opacity: 0.85; display: block; margin-top: 2px; }
+.ml-card-body {
+  padding: 12px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.ml-item {
+  background: var(--ml-fill);
+  border: 1px solid rgba(196,127,0,0.25);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 10.5px; font-weight: 600; color: var(--ml-text);
+  text-align: center;
+  line-height: 1.4;
+}
+.ml-item small { display: block; font-weight: 400; font-size: 9.5px; opacity: 0.8; margin-top: 1px; }
+
+/* Endpoints arrow connector (ML → IA) */
+.endpoints-connector {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 9px; font-weight: 600; color: var(--ml-stroke);
+  padding: 0 4px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+/* ── SHARED SERVICES ── */
+.shared-bar {
+  background: #F5F5F5;
+  border: 1.5px solid #CCCCCC;
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.shared-bar-label {
+  font-size: 11px; font-weight: 700; color: #555;
+  white-space: nowrap; margin-right: 4px;
+}
+.shared-item {
+  background: white;
+  border: 1px solid #CCC;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 10px; color: #555; font-weight: 500;
+  text-align: center;
+}
+
+/* ── CONSUMIDORES ── */
+.cons-bar {
+  background: var(--cons-fill);
+  border: 1.5px solid var(--cons-stroke);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.cons-bar-label {
+  font-size: 11px; font-weight: 700; color: #7A0028;
+  white-space: nowrap; margin-right: 4px;
+}
+.cons-item {
+  background: white;
+  border: 1px solid rgba(230,25,90,0.3);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 10px; color: #7A0028; font-weight: 500;
+}
+
+/* ── LEGEND ── */
+.legend-row {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 500; color: #444;
+}
+.legend-dot {
+  width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid;
+}
+
+/* ── FLOW ARROWS between rows ── */
+.flow-arrow {
+  display: flex; align-items: center; justify-content: center;
+  padding: 3px 0; color: var(--muted);
+  font-size: 13px; gap: 6px;
+}
+.flow-arrow span { font-size: 10px; font-style: italic; color: var(--muted); }
+
+/* ══════════════════════════════════════
+   RESPONSABILIDADES TAB
+══════════════════════════════════════ */
+.teams-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.rcard {
+  background: white;
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: 0 2px 8px rgba(2,27,58,0.06);
+  transition: box-shadow .2s, transform .2s;
+}
+.rcard:hover { box-shadow: 0 8px 24px rgba(2,27,58,0.12); transform: translateY(-2px); }
+.rcard::before { content: ''; display: block; height: 4px; background: var(--rc); }
+
+.rcard-head {
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid var(--border2);
+  background: var(--navy);
+}
+.rcard-num { font-size: 10px; font-weight: 600; color: var(--rc); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px; opacity: 0.9; }
+.rcard-name { font-size: 14px; font-weight: 700; color: white; line-height: 1.3; margin-bottom: 8px; }
+.rcard-mission { font-size: 11px; color: var(--muted); line-height: 1.6; font-weight: 400; }
+
+.rcard-aws {
+  padding: 7px 18px;
+  background: rgba(0,87,184,0.06);
+  border-bottom: 1px solid var(--border2);
+  font-size: 10px; color: var(--blue); font-weight: 600;
+  line-height: 1.5;
+}
+
+.rcard-body { padding: 0 18px; flex: 1; }
+.rcard-section { padding: 11px 0; border-bottom: 1px solid var(--border2); }
+.rcard-section:last-child { border-bottom: none; }
+.rcard-section-title {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--rc); margin-bottom: 7px; opacity: 0.9;
+}
+.rcard-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.rcard-list li {
+  font-size: 11px; color: #3A5272; line-height: 1.5;
+  padding-left: 12px; position: relative;
+}
+.rcard-list li::before {
+  content: ''; position: absolute; left: 0; top: 7px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--rc); opacity: 0.7;
+}
+
+.rcard-tools { padding: 12px 18px 16px; border-top: 1px solid var(--border2); background: var(--light); }
+.rcard-tools-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 7px; }
+.tools-wrap { display: flex; flex-wrap: wrap; gap: 5px; }
+.tool-tag {
+  padding: 3px 9px; border-radius: 100px; font-size: 10px; font-weight: 600;
+  border: 1px solid;
+}
+.tool-p { background: var(--rfill); border-color: var(--rc); color: var(--rc); }
+.tool-s { background: #EFF4FB; border-color: var(--border2); color: #5A7A9E; }
+
+.rc-mesh  { --rc: var(--mesh-stroke); --rfill: var(--mesh-fill); }
+.rc-api   { --rc: var(--blue);        --rfill: var(--api-fill); }
+.rc-ai    { --rc: var(--ai-stroke);   --rfill: var(--ai-fill); }
+.rc-ml    { --rc: var(--ml-stroke);   --rfill: var(--ml-fill); }
+
+/* ── TRANSVERSAL ── */
+.trans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.trans-card {
+  background: white; border-radius: 12px;
+  border: 1px solid var(--border2);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(2,27,58,0.06);
+}
+.trans-card::before { content: ''; display: block; height: 4px; background: var(--tc); }
+.trans-head {
+  padding: 16px 18px 12px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid var(--border2);
+  background: var(--navy);
+}
+.trans-icon-wrap {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: var(--tc); font-size: 18px;
+}
+.trans-head-txt h4 { font-size: 14px; font-weight: 700; color: white; }
+.trans-head-txt p { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.trans-body { padding: 14px 18px 16px; display: flex; flex-direction: column; gap: 7px; }
+.trans-item { display: flex; align-items: flex-start; gap: 9px; font-size: 12px; color: #3A5272; line-height: 1.5; }
+.trans-check {
+  width: 18px; height: 18px; border-radius: 4px;
+  background: var(--tcfill); border: 1px solid var(--tc);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+  font-size: 10px; font-weight: 700; color: var(--tc);
+}
+.tc-devsec { --tc: var(--magenta); --tcfill: #FEE8EE; }
+.tc-arch   { --tc: #C47F00;        --tcfill: #FFF4E0; }
+
+/* ── GOLDEN RULE ── */
+.golden-rule {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+  border-radius: 12px;
+  padding: 22px 28px;
+  display: flex; align-items: center; gap: 20px;
+  border: 2px solid var(--magenta);
+}
+.golden-icon {
+  width: 48px; height: 48px; border-radius: 10px;
+  background: var(--magenta); display: flex; align-items: center;
+  justify-content: center; font-size: 24px; flex-shrink: 0;
+}
+.golden-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--magenta); margin-bottom: 5px;
+}
+.golden-text { font-size: 14px; font-weight: 500; color: white; line-height: 1.6; }
+.golden-text strong { color: #FFD6E3; }
+
+/* ── MATRIX ── */
+.matrix-wrap { overflow-x: auto; margin-bottom: 24px; }
+.matrix-table { width: 100%; border-collapse: collapse; font-size: 11px; min-width: 680px; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(2,27,58,0.06); }
+.matrix-table th, .matrix-table td { border: 1px solid #E0EAF5; padding: 9px 12px; text-align: center; }
+.matrix-table thead tr { background: var(--navy); }
+.matrix-table thead th { color: var(--muted); font-size: 10px; font-weight: 600; letter-spacing: 0.5px; }
+.matrix-table thead th.row-h { text-align: left; min-width: 130px; }
+.matrix-table td.row-label { background: var(--light); text-align: left; font-weight: 600; white-space: nowrap; }
+.ctag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 9px; font-weight: 700; border: 1px solid; }
+
+/* ── SECTION HEADER ── */
+.sec-hdr { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.sec-hdr h3 { font-size: 13px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+.sec-hdr::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
+
+/* ── FOOTER ── */
+.site-footer {
+  background: var(--navy);
+  padding: 16px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 11px; color: var(--muted);
+  border-top: 3px solid var(--magenta);
+}
+.site-footer strong { color: white; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="amx-logo">A</div>
+    <div>
+      <h1>Aeroméxico — Estrategia de Plataforma</h1>
+      <span>TDD-AI · Arquitectura &amp; Research · Versión 1.0</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="meta-pill pill-mesh">4 Equipos</div>
+    <div class="meta-pill pill-api">6 Verticales</div>
+    <div class="meta-pill pill-ai">IA Agentes</div>
+    <div class="meta-pill pill-ml">Machine Learning</div>
+  </div>
+</header>
+
+<!-- TABS -->
+<nav class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('arquitectura',this)">Arquitectura de Plataforma</button>
+  <button class="tab-btn" onclick="showTab('responsabilidades',this)">Funciones y Responsabilidades</button>
+</nav>
+
+<!-- ═══════════════════════════════════
+     TAB 1: ARQUITECTURA
+═══════════════════════════════════ -->
+<div class="section active" id="tab-arquitectura">
+<div class="page-inner">
+
+  <div class="page-title-row">
+    <div class="page-title">
+      <h2>Modelo de Cuentas AWS y Capas de Plataforma</h2>
+      <p>Distribución de servicios por cuenta · SaaS transversales · Flujo desde ingesta hasta consumidor</p>
+    </div>
+  </div>
+
+  <div class="diag-section-wrap">
+
+    <!-- ── ROW 1: SAAS TRANSVERSALES ── -->
+    <div class="saas-row">
+      <div>
+        <div class="saas-row-label">Herramientas SaaS Transversales</div>
+        <span class="saas-row-sub">No viven en AWS · Se consumen desde todas las cuentas</span>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-left:auto">
+        <div class="saas-pill">Sensedia<span>API Catalog PaaS</span></div>
+        <div class="saas-pill">Auth0<span>IdP SaaS</span></div>
+        <div class="saas-pill">Akamai<span>CDN / WAF SaaS</span></div>
+        <div class="saas-pill">New Relic<span>Observability PaaS</span></div>
+      </div>
+    </div>
+
+    <!-- arrow -->
+    <div class="flow-arrow">↓ <span>Todas las cuentas consumen los SaaS transversales</span></div>
+
+    <!-- ── ROW 2: PRODUCER DOMAIN ACCOUNTS ── -->
+    <div class="producer-container">
+      <div class="producer-header">
+        <h3>Producer Domain Accounts — 1 cuenta AWS por vertical de negocio</h3>
+        <p>Data Mesh layer + API/Services Mesh layer conviven en la misma cuenta · Cada vertical es autónoma</p>
+      </div>
+
+      <div class="verticals-grid">
+
+        <!-- V1 -->
+        <div class="vertical-card">
+          <div class="vertical-header">Vertical 1<span>Pasajeros / CRM</span></div>
+          <div class="vertical-mesh-layer">
+            <div class="layer-label">Data Mesh Layer</div>
+            <div class="layer-items">RAW · Transform · Curated<br>DataZone · Glue · EMR · S3<br>Kinesis · SageMaker Studio</div>
+          </div>
+          <div class="vertical-api-layer">
+            <div class="layer-label">API / Services Mesh Layer</div>
+            <div class="layer-items">API Gateway · Lambda JDBC<br>→ Registra en Sensedia</div>
+          </div>
+        </div>
+
+        <!-- V2 -->
+        <div class="vertical-card">
+          <div class="vertical-header">Vertical 2<span>Operaciones Vuelo</span></div>
+          <div class="vertical-mesh-layer">
+            <div class="layer-label">Data Mesh Layer</div>
+            <div class="layer-items">RAW · Transform · Curated<br>DataZone · Glue · EMR · S3<br>Kinesis · SageMaker Studio</div>
+          </div>
+          <div class="vertical-api-layer">
+            <div class="layer-label">API / Services Mesh Layer</div>
+            <div class="layer-items">API Gateway · Lambda JDBC<br>→ Registra en Sensedia</div>
+          </div>
+        </div>
+
+        <!-- V3 -->
+        <div class="vertical-card">
+          <div class="vertical-header">Vertical 3<span>Revenue / Comercial</span></div>
+          <div class="vertical-mesh-layer">
+            <div class="layer-label">Data Mesh Layer</div>
+            <div class="layer-items">RAW · Transform · Curated<br>DataZone · Glue · EMR · S3<br>Kinesis · SageMaker Studio</div>
+          </div>
+          <div class="vertical-api-layer">
+            <div class="layer-label">API / Services Mesh Layer</div>
+            <div class="layer-items">API Gateway · Lambda JDBC<br>→ Registra en Sensedia</div>
+          </div>
+        </div>
+
+        <!-- V4 -->
+        <div class="vertical-card">
+          <div class="vertical-header">Vertical 4<span>Carga / Logística</span></div>
+          <div class="vertical-mesh-layer">
+            <div class="layer-label">Data Mesh Layer</div>
+            <div class="layer-items">RAW · Curated<br>DataZone · Glue · S3</div>
+          </div>
+          <div class="vertical-api-layer">
+            <div class="layer-label">API / Services Mesh Layer</div>
+            <div class="layer-items">API Gateway · Lambda JDBC<br>→ Registra en Sensedia</div>
+          </div>
+        </div>
+
+        <!-- V5 -->
+        <div class="vertical-card">
+          <div class="vertical-header">Vertical 5<span>Mantenimiento MRO</span></div>
+          <div class="vertical-mesh-layer">
+            <div class="layer-label">Data Mesh Layer</div>
+            <div class="layer-items">RAW · Curated<br>DataZone · Glue · S3</div>
+          </div>
+          <div class="vertical-api-layer">
+            <div class="layer-label">API / Services Mesh Layer</div>
+            <div class="layer-items">API Gateway · Lambda JDBC<br>→ Registra en Sensedia</div>
+          </div>
+        </div>
+
+        <!-- V6 -->
+        <div class="vertical-card">
+          <div class="vertical-header">Vertical 6<span>Finanzas / Costos</span></div>
+          <div class="vertical-mesh-layer">
+            <div class="layer-label">Data Mesh Layer</div>
+            <div class="layer-items">RAW · Curated<br>DataZone · Glue · S3</div>
+          </div>
+          <div class="vertical-api-layer">
+            <div class="layer-label">API / Services Mesh Layer</div>
+            <div class="layer-items">API Gateway · Lambda JDBC<br>→ Registra en Sensedia</div>
+          </div>
+        </div>
+
+      </div><!-- /verticals-grid -->
+
+      <!-- Legend inside producer -->
+      <div style="display:flex;gap:12px;margin-top:10px;align-items:center">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mesh-fill);border-color:var(--mesh-stroke)"></div>Data Mesh layer</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--api-fill);border-color:var(--api-stroke)"></div>API / Services Mesh layer</div>
+      </div>
+    </div>
+
+    <!-- arrow -->
+    <div class="flow-arrow">↓ <span>Data Products expuestos como APIs · ML consume datasets curados · Agentes consumen APIs + KB</span></div>
+
+    <!-- ── ROW 3: IA ACCOUNTS + ML ── -->
+    <div class="ia-ml-row">
+
+      <!-- IA container (spans 2 cols) -->
+      <div class="ia-container" style="grid-column:span 2">
+        <div class="ia-container-header">
+          <h3>Cuentas IA — AgentCore</h3>
+          <p>Conectadas entre sí via MCP · AMX Networking Account (Palo Alto FW)</p>
+        </div>
+
+        <div class="ia-accounts-grid">
+
+          <!-- AMX AI Agentic -->
+          <div class="ia-account-card">
+            <div class="ia-account-header">AMX AI Agentic Account<span>AgentCore runtime principal</span></div>
+            <div class="ia-account-body">
+              <div class="ia-item">Facade · Token Manager · MemoryDB</div>
+              <div class="ia-item">SPAN Collector · Tool Registry</div>
+              <div class="ia-item">AgentCore Gateway · Policies</div>
+            </div>
+          </div>
+
+          <!-- AMX AMAIA -->
+          <div class="ia-account-card">
+            <div class="ia-account-header">AMX AMAIA Account<span>AgentCore runtime · Bedrock</span></div>
+            <div class="ia-account-body">
+              <div class="ia-item">AMAIA EKS · AMAIA-KB POD · PostgreSQL</div>
+              <div class="ia-item">AgentCore Runtime · Runtime API</div>
+              <div class="ia-item">Bedrock LLMs (Nova · Claude · GPT) · Guardrails</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- MCP label between accounts -->
+        <div style="text-align:center;margin-top:6px">
+          <span style="font-size:10px;font-weight:700;color:var(--ai-stroke);background:var(--ai-fill);padding:3px 12px;border-radius:100px;border:1px solid rgba(123,63,160,0.3)">⟷ MCP — Protocolo de comunicación entre cuentas</span>
+        </div>
+      </div>
+
+      <!-- ML Account -->
+      <div class="ml-card">
+        <div class="ml-card-header">
+          <h3>ML Account</h3>
+          <span>(propuesto)</span>
+        </div>
+        <div class="ml-card-body">
+          <div class="ml-item">SageMaker Unified Studio<small>Notebooks · Experiments · AutoML</small></div>
+          <div class="ml-item">Feature Store · Model Registry<small>Versionado · Linaje de datos</small></div>
+          <div class="ml-item">Pipelines · SM Endpoints<small>Entrenamiento · blue/green</small></div>
+          <div class="ml-item">Drift Monitoring · MLOps<small>CloudWatch · Reentrenamiento auto</small></div>
+        </div>
+        <div style="padding:8px 12px;background:var(--ml-fill);border-top:1px solid rgba(196,127,0,0.2);text-align:center">
+          <span style="font-size:10px;font-weight:700;color:var(--ml-stroke)">↑ Endpoints → AgentCore Tool Registry</span>
+        </div>
+      </div>
+
+    </div><!-- /ia-ml-row -->
+
+    <!-- arrow -->
+    <div class="flow-arrow">↓ <span>Todas las cuentas comparten infraestructura de red y logging</span></div>
+
+    <!-- ── ROW 4: SHARED SERVICES ── -->
+    <div class="shared-bar">
+      <div class="shared-bar-label">Cuentas Compartidas — Shared Services</div>
+      <div class="shared-item">Central Networking<br><span style="font-size:9px;color:#888">Transit GW · Direct Connect</span></div>
+      <div class="shared-item">Central Logging<br><span style="font-size:9px;color:#888">CloudWatch · EXABEAM SIEM</span></div>
+      <div class="shared-item">Central DevSecOps<br><span style="font-size:9px;color:#888">CI/CD · Veracode · Tenable</span></div>
+      <div class="shared-item">AMX Networking<br><span style="font-size:9px;color:#888">Palo Alto FW · VPC Peering</span></div>
+      <div class="shared-item">AMX ECommerce<br><span style="font-size:9px;color:#888">API GW HTTP · EKS · VPC Link</span></div>
+    </div>
+
+    <!-- arrow -->
+    <div class="flow-arrow">↓ <span>APIs expuestas en Sensedia → consumidores externos</span></div>
+
+    <!-- ── ROW 5: CONSUMIDORES ── -->
+    <div class="cons-bar">
+      <div class="cons-bar-label">Consumidores Externos</div>
+      <div class="cons-item">Portal</div>
+      <div class="cons-item">Salesforce</div>
+      <div class="cons-item">GPT GoldenRecord</div>
+      <div class="cons-item">GPT Customers</div>
+      <div class="cons-item">GPT Booking</div>
+      <div class="cons-item">KIU</div>
+      <div class="cons-item">Sabre</div>
+      <div class="cons-item">Genesys Cloud</div>
+      <div class="cons-item">Qualtrics</div>
+      <div class="cons-item">Witness AI</div>
+    </div>
+
+    <!-- NOTE: DevSecOps + Arch -->
+    <div style="display:flex;gap:12px;margin-top:4px;flex-wrap:wrap">
+      <div style="flex:1;min-width:280px;background:#FEE8EE;border:1.5px solid var(--magenta);border-radius:10px;padding:12px 16px;display:flex;align-items:flex-start;gap:10px">
+        <span style="font-size:20px">🛡</span>
+        <div><div style="font-size:11px;font-weight:700;color:#7A0028;margin-bottom:3px">DevSecOps / Seguridad</div><div style="font-size:11px;color:#7A0028">Supervisa y aprueba transversalmente todas las capas, cuentas y despliegues</div></div>
+      </div>
+      <div style="flex:1;min-width:280px;background:#FFF4E0;border:1.5px solid #C47F00;border-radius:10px;padding:12px 16px;display:flex;align-items:flex-start;gap:10px">
+        <span style="font-size:20px">📐</span>
+        <div><div style="font-size:11px;font-weight:700;color:#7A4F00;margin-bottom:3px">Arquitectura / Governance</div><div style="font-size:11px;color:#7A4F00">Aprueba ADRs, registro en DataZone, publicación en Sensedia y ciclo de deprecación de activos</div></div>
+      </div>
+    </div>
+
+  </div><!-- /diag-section-wrap -->
+
+</div><!-- /page-inner -->
+</div><!-- /tab-arquitectura -->
+
+
+<!-- ═══════════════════════════════════
+     TAB 2: RESPONSABILIDADES
+═══════════════════════════════════ -->
+<div class="section" id="tab-responsabilidades">
+<div class="page-inner">
+
+  <div class="page-title-row">
+    <div class="page-title">
+      <h2>Funciones y Responsabilidades por Equipo</h2>
+      <p>4 equipos · Cuentas AWS asignadas · Gobierno y modelo de colaboración</p>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><h3>Equipos de plataforma</h3></div>
+
+  <div class="teams-grid-4">
+
+    <!-- EQUIPO 1: DATA MESH -->
+    <div class="rcard rc-mesh">
+      <div class="rcard-head">
+        <div class="rcard-num">Equipo 01</div>
+        <div class="rcard-name">Plataforma de Datos Mesh</div>
+        <div class="rcard-mission">Acelerar la entrega ágil de productos de datos para potenciar el crecimiento del negocio y la experiencia del cliente.</div>
+      </div>
+      <div class="rcard-aws">Producer Domain Account × 6 verticales · 1 cuenta AWS por vertical</div>
+      <div class="rcard-body">
+        <div class="rcard-section">
+          <div class="rcard-section-title">Ciclo de vida del Data Product</div>
+          <ul class="rcard-list">
+            <li>Definir propósito, dueños y estándares de nombres</li>
+            <li>Solicitar cuenta AWS y configurar llaves KMS</li>
+            <li>Configurar Zona de Inspección · validar pipelines</li>
+            <li>Ejecutar ingesta batch y tiempo real (Kinesis, Kafka)</li>
+            <li>Construir Datasets, Modelos y Pipelines CI/CD</li>
+            <li>Revisar cifrado y Checklist de Seguridad</li>
+            <li>Despliegue con aprobación DevSecOps</li>
+            <li>Documentar ADR · registrar en Amazon DataZone</li>
+          </ul>
+        </div>
+        <div class="rcard-section">
+          <div class="rcard-section-title">Gestión de la plataforma</div>
+          <ul class="rcard-list">
+            <li>Administrar SageMaker Unified Studio</li>
+            <li>Gestionar capas RAW → Curated → Purpose-Built</li>
+            <li>Mantener AWS Glue Data Catalog</li>
+            <li>Exponer datasets como Data As a Service</li>
+          </ul>
+        </div>
+      </div>
+      <div class="rcard-tools">
+        <div class="rcard-tools-label">Herramientas clave</div>
+        <div class="tools-wrap">
+          <span class="tool-tag tool-p">SageMaker Studio</span>
+          <span class="tool-tag tool-p">Amazon DataZone</span>
+          <span class="tool-tag tool-s">Glue / EMR</span>
+          <span class="tool-tag tool-s">S3 · Kinesis</span>
+          <span class="tool-tag tool-s">Athena · QuickSight</span>
+          <span class="tool-tag tool-s">Amazon Q Dev</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EQUIPO 2: SERVICES MESH -->
+    <div class="rcard rc-api">
+      <div class="rcard-head">
+        <div class="rcard-num">Equipo 02</div>
+        <div class="rcard-name">Plataforma Services Mesh APIs</div>
+        <div class="rcard-mission">Exponer, gobernar y controlar el consumo de APIs. Registro central de todo servicio expuesto en Sensedia.</div>
+      </div>
+      <div class="rcard-aws">API Layer dentro de cada Producer Account · Sensedia / Auth0 / Akamai = SaaS transversales</div>
+      <div class="rcard-body">
+        <div class="rcard-section">
+          <div class="rcard-section-title">Administración del MESH API Services</div>
+          <ul class="rcard-list">
+            <li>Administrar API Products 1–4, Lambda JDBC y API GW</li>
+            <li>Gestionar autenticación M2M con Auth0 (SaaS)</li>
+            <li>Administrar Akamai CDN y WAF para exposición externa</li>
+            <li>Gestionar Transit Gateway para routing entre cuentas</li>
+          </ul>
+        </div>
+        <div class="rcard-section">
+          <div class="rcard-section-title">Gobierno de APIs en Sensedia</div>
+          <ul class="rcard-list">
+            <li>Publicar y mantener contratos OAS/RAML</li>
+            <li>Registrar Data As a Service del equipo Data Mesh</li>
+            <li>Registrar APIs cognitivas del equipo AgentCore</li>
+            <li>Registrar endpoints de inferencia del equipo ML</li>
+            <li>Onboarding: Portal, Salesforce, GPTs · rate limits</li>
+          </ul>
+        </div>
+      </div>
+      <div class="rcard-tools">
+        <div class="rcard-tools-label">Herramientas clave</div>
+        <div class="tools-wrap">
+          <span class="tool-tag tool-p">Sensedia PaaS</span>
+          <span class="tool-tag tool-p">Auth0 M2M</span>
+          <span class="tool-tag tool-p">Akamai CDN/WAF</span>
+          <span class="tool-tag tool-s">Amazon API GW</span>
+          <span class="tool-tag tool-s">Lambda JDBC</span>
+          <span class="tool-tag tool-s">New Relic</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EQUIPO 3: AGENTCORE -->
+    <div class="rcard rc-ai">
+      <div class="rcard-head">
+        <div class="rcard-num">Equipo 03</div>
+        <div class="rcard-name">Plataforma IA Agentes / AgentCore</div>
+        <div class="rcard-mission">Operar agentes de IA que consumen datos del Data Mesh y exponen capacidades cognitivas via APIs en Services Mesh.</div>
+      </div>
+      <div class="rcard-aws">AMX AI Agentic Account + AMX AMAIA Account · MCP · Palo Alto FW</div>
+      <div class="rcard-body">
+        <div class="rcard-section">
+          <div class="rcard-section-title">AgentCore — AMX AI Agentic Account</div>
+          <ul class="rcard-list">
+            <li>Administrar Facade, Gateway, Identity y Policies</li>
+            <li>Operar Token Manager y Token Cache MemoryDB</li>
+            <li>Gestionar SPAN Collector y Tool Registry</li>
+            <li>Configurar protocolo MCP</li>
+          </ul>
+        </div>
+        <div class="rcard-section">
+          <div class="rcard-section-title">AMAIA y Runtime — AMX AMAIA Account</div>
+          <ul class="rcard-list">
+            <li>Operar AMAIA EKS + AMAIA-KB POD + PostgreSQL</li>
+            <li>Administrar AgentCore Runtime y Runtime API</li>
+            <li>Bedrock LLMs (Nova, Claude, GPT) + Guardrails</li>
+            <li>Definir reglas: AMAIA / Aerobot / Common</li>
+          </ul>
+        </div>
+      </div>
+      <div class="rcard-tools">
+        <div class="rcard-tools-label">Herramientas clave</div>
+        <div class="tools-wrap">
+          <span class="tool-tag tool-p">AgentCore Runtime</span>
+          <span class="tool-tag tool-p">Bedrock LLMs</span>
+          <span class="tool-tag tool-s">AMAIA EKS</span>
+          <span class="tool-tag tool-s">MemoryDB</span>
+          <span class="tool-tag tool-s">MCP · A2A</span>
+          <span class="tool-tag tool-s">Witness AI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EQUIPO 4: ML -->
+    <div class="rcard rc-ml">
+      <div class="rcard-head">
+        <div class="rcard-num">Equipo 04</div>
+        <div class="rcard-name">Plataforma Machine Learning</div>
+        <div class="rcard-mission">Construir, entrenar y desplegar modelos de ML que alimentan capacidades analíticas del Data Mesh y cognitivas de los agentes.</div>
+      </div>
+      <div class="rcard-aws">ML Account (propuesto) · SageMaker + Feature Store en la misma cuenta AWS</div>
+      <div class="rcard-body">
+        <div class="rcard-section">
+          <div class="rcard-section-title">Pipeline de entrenamiento</div>
+          <ul class="rcard-list">
+            <li>Acceso a datasets curados via DataZone</li>
+            <li>Feature engineering en SageMaker + Feature Store</li>
+            <li>Diseñar experimentos y evaluar modelos (F1, AUC)</li>
+          </ul>
+        </div>
+        <div class="rcard-section">
+          <div class="rcard-section-title">Registro, despliegue y MLOps</div>
+          <ul class="rcard-list">
+            <li>Registrar modelos en Model Registry con linaje</li>
+            <li>Desplegar endpoints con estrategia blue/green</li>
+            <li>Notificar a Services Mesh para registro en Sensedia</li>
+            <li>Notificar a AgentCore cuando hay nuevo modelo</li>
+            <li>Monitorear drift con CloudWatch · reentrenamiento</li>
+          </ul>
+        </div>
+      </div>
+      <div class="rcard-tools">
+        <div class="rcard-tools-label">Herramientas clave</div>
+        <div class="tools-wrap">
+          <span class="tool-tag tool-p">SageMaker Studio</span>
+          <span class="tool-tag tool-p">Feature Store</span>
+          <span class="tool-tag tool-s">Model Registry</span>
+          <span class="tool-tag tool-s">SM Pipelines</span>
+          <span class="tool-tag tool-s">SM Endpoints</span>
+          <span class="tool-tag tool-s">CloudWatch</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /teams-grid -->
+
+  <!-- MATRIX -->
+  <div class="sec-hdr"><h3>Matriz de interacciones entre equipos</h3></div>
+  <div class="matrix-wrap">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th class="row-h">Desde ↓ / Hacia →</th>
+          <th>Data Mesh</th><th>Services Mesh</th><th>AgentCore</th>
+          <th>Machine Learning</th><th>DevSecOps</th><th>Arch/Gov</th><th>Consumidores</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label" style="color:var(--mesh-stroke)">Data Mesh</td>
+          <td>—</td>
+          <td><span class="ctag" style="background:var(--mesh-fill);border-color:var(--mesh-stroke);color:var(--mesh-text)">OAS/RAML</span></td>
+          <td><span class="ctag" style="background:var(--mesh-fill);border-color:var(--mesh-stroke);color:var(--mesh-text)">Dataset KB</span></td>
+          <td><span class="ctag" style="background:var(--mesh-fill);border-color:var(--mesh-stroke);color:var(--mesh-text)">Dataset ML</span></td>
+          <td><span class="ctag" style="background:var(--mesh-fill);border-color:var(--mesh-stroke);color:var(--mesh-text)">Checklist</span></td>
+          <td><span class="ctag" style="background:var(--mesh-fill);border-color:var(--mesh-stroke);color:var(--mesh-text)">ADR</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="row-label" style="color:var(--blue)">Services Mesh</td>
+          <td>—</td><td>—</td><td>—</td><td>—</td>
+          <td><span class="ctag" style="background:var(--api-fill);border-color:var(--blue);color:var(--api-text)">Reporte</span></td>
+          <td><span class="ctag" style="background:var(--api-fill);border-color:var(--blue);color:var(--api-text)">Solicitud</span></td>
+          <td><span class="ctag" style="background:var(--api-fill);border-color:var(--blue);color:var(--api-text)">Expone APIs</span></td>
+        </tr>
+        <tr>
+          <td class="row-label" style="color:var(--ai-stroke)">AgentCore / IA</td>
+          <td><span class="ctag" style="background:var(--ai-fill);border-color:var(--ai-stroke);color:var(--ai-text)">Solicita KB</span></td>
+          <td><span class="ctag" style="background:var(--ai-fill);border-color:var(--ai-stroke);color:var(--ai-text)">Reg. APIs</span></td>
+          <td>—</td>
+          <td><span class="ctag" style="background:var(--ai-fill);border-color:var(--ai-stroke);color:var(--ai-text)">Inferencia</span></td>
+          <td><span class="ctag" style="background:var(--ai-fill);border-color:var(--ai-stroke);color:var(--ai-text)">Trazas</span></td>
+          <td><span class="ctag" style="background:var(--ai-fill);border-color:var(--ai-stroke);color:var(--ai-text)">Notif.</span></td>
+          <td><span class="ctag" style="background:var(--ai-fill);border-color:var(--ai-stroke);color:var(--ai-text)">Respuesta</span></td>
+        </tr>
+        <tr>
+          <td class="row-label" style="color:var(--ml-stroke)">Machine Learning</td>
+          <td><span class="ctag" style="background:var(--ml-fill);border-color:var(--ml-stroke);color:var(--ml-text)">Dataset</span></td>
+          <td><span class="ctag" style="background:var(--ml-fill);border-color:var(--ml-stroke);color:var(--ml-text)">Endpoint</span></td>
+          <td><span class="ctag" style="background:var(--ml-fill);border-color:var(--ml-stroke);color:var(--ml-text)">Modelo</span></td>
+          <td>—</td>
+          <td><span class="ctag" style="background:var(--ml-fill);border-color:var(--ml-stroke);color:var(--ml-text)">Deploy</span></td>
+          <td><span class="ctag" style="background:var(--ml-fill);border-color:var(--ml-stroke);color:var(--ml-text)">ADR</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="row-label" style="color:var(--magenta)">DevSecOps</td>
+          <td><span class="ctag" style="background:var(--cons-fill);border-color:var(--magenta);color:#7A0028">Valida</span></td>
+          <td><span class="ctag" style="background:var(--cons-fill);border-color:var(--magenta);color:#7A0028">Aprueba</span></td>
+          <td><span class="ctag" style="background:var(--cons-fill);border-color:var(--magenta);color:#7A0028">Supervisa</span></td>
+          <td><span class="ctag" style="background:var(--cons-fill);border-color:var(--magenta);color:#7A0028">Valida</span></td>
+          <td>—</td>
+          <td><span class="ctag" style="background:var(--cons-fill);border-color:var(--magenta);color:#7A0028">Escala</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="row-label" style="color:#C47F00">Arch / Gov</td>
+          <td><span class="ctag" style="background:var(--ml-fill);border-color:#C47F00;color:var(--ml-text)">Aprueba</span></td>
+          <td><span class="ctag" style="background:var(--ml-fill);border-color:#C47F00;color:var(--ml-text)">Aprueba</span></td>
+          <td><span class="ctag" style="background:var(--ml-fill);border-color:#C47F00;color:var(--ml-text)">Aprueba</span></td>
+          <td><span class="ctag" style="background:var(--ml-fill);border-color:#C47F00;color:var(--ml-text)">Aprueba</span></td>
+          <td><span class="ctag" style="background:var(--ml-fill);border-color:#C47F00;color:var(--ml-text)">Escala</span></td>
+          <td>—</td><td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TRANSVERSALES -->
+  <div class="sec-hdr"><h3>Actores transversales</h3></div>
+  <div class="trans-grid">
+
+    <div class="trans-card tc-devsec">
+      <div class="trans-head">
+        <div class="trans-icon-wrap">🛡</div>
+        <div class="trans-head-txt">
+          <h4>DevSecOps / Seguridad</h4>
+          <p>Supervisa y aprueba transversalmente los 4 equipos</p>
+        </div>
+      </div>
+      <div class="trans-body">
+        <div class="trans-item"><div class="trans-check">✓</div>Aprueba Checklist de seguridad de cada Data Product antes de habilitar la Zona de Inspección</div>
+        <div class="trans-item"><div class="trans-check">✓</div>Valida IAM, KMS y Macie antes de cada despliegue a producción · Firma la aprobación DevSecOps</div>
+        <div class="trans-item"><div class="trans-check">✓</div>Aprueba políticas OAuth / JWT de cada API registrada en Sensedia · Valida Auth0 M2M</div>
+        <div class="trans-item"><div class="trans-check">✓</div>Supervisa Bedrock Guardrails y Witness AI en respuestas de agentes de IA</div>
+        <div class="trans-item"><div class="trans-check">✓</div>Monitorea EXABEAM/EXPEL SIEM · Puede suspender accesos o aislar cuentas ante incidentes</div>
+      </div>
+    </div>
+
+    <div class="trans-card tc-arch">
+      <div class="trans-head">
+        <div class="trans-icon-wrap">📐</div>
+        <div class="trans-head-txt">
+          <h4>Arquitectura / Governance</h4>
+          <p>Aprueba y gobierna el ciclo de vida de todos los activos</p>
+        </div>
+      </div>
+      <div class="trans-body">
+        <div class="trans-item"><div class="trans-check">✓</div>Aprueba inicio de cada Data Product y valida que no exista duplicado en DataZone</div>
+        <div class="trans-item"><div class="trans-check">✓</div>Valida ADR y publica en catálogo oficial · Notifica a ML y AgentCore cuando es relevante</div>
+        <div class="trans-item"><div class="trans-check">✓</div>Aprueba publicación de APIs en Sensedia: versionado, no duplicidad, categorización correcta</div>
+        <div class="trans-item"><div class="trans-check">✓</div>Aprueba caso de uso de modelos ML y valida Model Registry antes del despliegue a prod</div>
+        <div class="trans-item"><div class="trans-check">✓</div>Gestiona ciclo de deprecación de APIs, Data Products y modelos obsoletos</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GOLDEN RULE -->
+  <div class="sec-hdr"><h3>Principio rector</h3></div>
+  <div class="golden-rule">
+    <div class="golden-icon">⚡</div>
+    <div>
+      <div class="golden-label">Regla de oro</div>
+      <div class="golden-text"><strong>Todo servicio expuesto — datos, modelos ML o respuestas de agentes —</strong> se registra en Sensedia a través del equipo Services Mesh. Ningún equipo publica APIs directamente sin pasar por el proceso de registro y aprobación.</div>
+    </div>
+  </div>
+
+</div><!-- /page-inner -->
+</div><!-- /tab-responsabilidades -->
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <span><strong>Aeroméxico</strong> · Arquitectura &amp; Research · TDD-AI</span>
+  <span>Versión 1.0 · Abril 2026 · Confidencial</span>
+</footer>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
