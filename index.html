@@ -665,6 +665,284 @@
     .donut-wrap{grid-template-columns:1fr}
   }
 
+  /* ===== MOTOR APIs DASHBOARD ===== */
+  .motor-kpi-row{margin-top:18px}
+
+  /* Timeline horizontal */
+  .motor-timeline-card{
+    grid-column:1/-1;
+    margin-top:6px;
+    border-color:rgba(230,25,90,0.35);
+  }
+  .motor-timeline-card::before,
+  .motor-timeline-card::after{border-color:var(--magenta)}
+
+  .timeline-wrap{
+    position:relative;
+    padding:20px 10px 10px;
+  }
+  .timeline-track{
+    position:absolute;
+    top:48px;
+    left:6%;right:6%;
+    height:3px;
+    background:linear-gradient(90deg,
+      rgba(73,230,162,0.2) 0%,
+      rgba(230,25,90,0.15) 50%,
+      rgba(79,211,255,0.1) 100%);
+    border-top:1px dashed rgba(79,211,255,0.25);
+    z-index:0;
+  }
+  .timeline-progress{
+    position:absolute;
+    top:48px;
+    left:6%;
+    width:28%;
+    height:3px;
+    background:linear-gradient(90deg,var(--green),var(--magenta));
+    box-shadow:0 0 12px var(--magenta);
+    z-index:1;
+  }
+
+  .timeline-phases{
+    position:relative;z-index:2;
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:8px;
+  }
+  .phase-node{
+    display:flex;flex-direction:column;align-items:center;
+    text-align:center;
+    padding-top:6px;
+  }
+  .phase-marker{
+    position:relative;
+    width:44px;height:44px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Orbitron',sans-serif;
+    font-size:13px;font-weight:700;
+    margin-bottom:12px;
+    transition:all .3s ease;
+  }
+  .phase-node.done .phase-marker{
+    background:var(--green);
+    color:#021B3A;
+    box-shadow:0 0 20px rgba(73,230,162,0.7), inset 0 0 0 3px rgba(255,255,255,0.2);
+    border:2px solid #8cffcf;
+  }
+  .phase-node.active .phase-marker{
+    background:var(--magenta);
+    color:#fff;
+    box-shadow:0 0 24px rgba(230,25,90,0.8), inset 0 0 0 3px rgba(255,255,255,0.15);
+    border:2px solid var(--magenta-soft);
+  }
+  .phase-node.pending .phase-marker{
+    background:rgba(6,21,48,0.9);
+    color:var(--text-dim);
+    border:2px solid rgba(79,211,255,0.3);
+  }
+  .pulse-ring{
+    position:absolute;inset:-6px;
+    border-radius:50%;
+    border:2px solid var(--magenta);
+    animation:pulseRing 1.8s ease-out infinite;
+  }
+  @keyframes pulseRing{
+    0%{transform:scale(1);opacity:0.8}
+    100%{transform:scale(1.4);opacity:0}
+  }
+
+  .phase-weeks{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9.5px;letter-spacing:1.5px;
+    color:var(--cyan);
+    text-transform:uppercase;
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  .phase-node.done .phase-weeks{color:var(--green)}
+  .phase-node.active .phase-weeks{color:var(--magenta-soft)}
+
+  .phase-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:12px;font-weight:700;
+    color:#fff;line-height:1.3;
+    margin-bottom:6px;
+    min-height:34px;
+  }
+  .phase-node.pending .phase-title{color:var(--text-dim)}
+
+  .phase-desc{
+    font-size:11px;
+    color:var(--text-dim);
+    line-height:1.35;
+    margin-bottom:10px;
+    min-height:46px;
+    padding:0 4px;
+  }
+
+  .phase-status{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9.5px;letter-spacing:1px;
+    padding:3px 8px;
+    font-weight:600;
+  }
+  .status-done{
+    background:rgba(73,230,162,0.12);
+    border:1px solid rgba(73,230,162,0.5);
+    color:var(--green);
+  }
+  .status-active{
+    background:rgba(230,25,90,0.15);
+    border:1px solid var(--magenta);
+    color:var(--magenta-soft);
+    animation:blink 1.6s ease-in-out infinite;
+  }
+  @keyframes blink{
+    0%,100%{box-shadow:0 0 0 rgba(230,25,90,0.4)}
+    50%{box-shadow:0 0 14px rgba(230,25,90,0.6)}
+  }
+  .status-pending{
+    background:rgba(79,211,255,0.05);
+    border:1px solid rgba(79,211,255,0.2);
+    color:var(--text-dim);
+  }
+
+  /* Motor detail: entregables + progreso */
+  .motor-detail{margin-top:6px}
+
+  .deliverables-grid{
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .deliv-item{
+    display:grid;
+    grid-template-columns:36px 1fr 28px;
+    gap:12px;align-items:center;
+    padding:10px 12px;
+    background:rgba(73,230,162,0.05);
+    border:1px solid rgba(73,230,162,0.2);
+    border-left:3px solid var(--green);
+    transition:all .2s;
+  }
+  .deliv-item:hover{
+    background:rgba(73,230,162,0.1);
+    transform:translateX(3px);
+  }
+  .deliv-icon{
+    font-size:20px;
+    text-align:center;
+    opacity:0.85;
+  }
+  .deliv-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:12px;font-weight:700;
+    color:#fff;
+    margin-bottom:2px;
+    letter-spacing:0.3px;
+  }
+  .deliv-desc{
+    font-size:11.5px;
+    color:var(--text-dim);
+    line-height:1.35;
+  }
+  .deliv-check{
+    font-family:'Orbitron',sans-serif;
+    font-size:18px;font-weight:900;
+    color:var(--green);
+    text-align:center;
+    text-shadow:0 0 8px var(--green);
+  }
+
+  /* Progreso global */
+  .motor-progress-wrap{margin-bottom:22px}
+  .motor-progress-label{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-bottom:10px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:1px;
+    color:var(--text-dim);
+    text-transform:uppercase;
+  }
+  .motor-progress-val{
+    font-family:'Orbitron',sans-serif;
+    font-size:26px;font-weight:900;
+    color:var(--magenta-soft);
+    text-shadow:0 0 14px var(--magenta);
+    letter-spacing:0;
+  }
+  .motor-progress-bar{
+    position:relative;
+    height:18px;
+    background:rgba(79,211,255,0.06);
+    border:1px solid rgba(79,211,255,0.2);
+  }
+  .motor-progress-fill{
+    position:absolute;
+    inset:0;right:auto;
+    width:33%;
+    background:linear-gradient(90deg,var(--green),var(--magenta));
+    box-shadow:0 0 18px var(--magenta);
+  }
+  .motor-progress-markers{
+    position:absolute;inset:0;
+    pointer-events:none;
+  }
+  .pm-marker{
+    position:absolute;
+    top:-4px;bottom:-4px;
+    width:2px;
+    background:rgba(79,211,255,0.4);
+    transform:translateX(-1px);
+  }
+  .pm-marker.active{
+    background:var(--magenta);
+    box-shadow:0 0 10px var(--magenta);
+    width:3px;
+  }
+
+  /* Phase distribution bars */
+  .phase-distribution{
+    display:flex;flex-direction:column;gap:10px;
+    padding-top:14px;
+    border-top:1px dashed rgba(79,211,255,0.15);
+  }
+  .phase-bar-row{
+    display:grid;
+    grid-template-columns:60px 1fr 50px;
+    gap:12px;align-items:center;
+  }
+  .phase-bar-lbl{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;letter-spacing:1px;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    font-weight:600;
+  }
+  .phase-bar-track{
+    height:14px;
+    background:rgba(79,211,255,0.06);
+    border:1px solid rgba(79,211,255,0.15);
+    position:relative;overflow:hidden;
+  }
+  .phase-bar-fill{
+    height:100%;
+    transition:width .5s ease;
+  }
+  .phase-bar-pct{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;font-weight:700;
+    text-align:right;
+  }
+
+  @media (max-width:1100px){
+    .timeline-phases{grid-template-columns:repeat(3,1fr);gap:16px 8px}
+    .timeline-track,.timeline-progress{display:none}
+  }
+  @media (max-width:700px){
+    .timeline-phases{grid-template-columns:repeat(2,1fr)}
+  }
+
   @media (max-width: 1100px){
     .grid{grid-template-columns:repeat(2,1fr)}
     .dp-card,.vuln-card{grid-column:span 2}
@@ -890,75 +1168,221 @@
     </div>
   </div>
 
-  <!-- ============ SECCIÓN 2: DATA PRODUCTS APIs ============ -->
+  <!-- ============ SECCIÓN 2: DATA PRODUCTS APIs · DASHBOARD ============ -->
   <div class="section-title">
     Generación de APIs de Data Products — Motor Kiro
     <span class="count">FASE 1 ✓ TERMINADA · FASE 2 EN CURSO</span>
   </div>
 
-  <div class="card dp-card">
-    <div class="card-head">
-      <div class="card-title" style="font-size:17px">Motor de APIs sobre AWS SMUS / DataZone — Plan de Despliegue y Adopción</div>
-      <div class="card-tag" style="border-color:var(--magenta);color:var(--magenta-soft)">~11 SEMANAS</div>
+  <!-- KPIs fila superior Motor -->
+  <div class="gpt-kpi-row motor-kpi-row">
+    <div class="kpi-card kpi-green">
+      <div class="kpi-num">1<span style="font-size:22px">/6</span></div>
+      <div class="kpi-lbl">Fases concluidas</div>
     </div>
-    <span class="status-pill st-ok" style="width:fit-content">
-      <span class="dot"></span>Análisis y diseño concluidos · arrancando Hooks, MCP y scripts
-    </span>
+    <div class="kpi-card kpi-magenta">
+      <div class="kpi-num">33<span style="font-size:22px">%</span></div>
+      <div class="kpi-lbl">Avance global motor</div>
+    </div>
+    <div class="kpi-card kpi-cyan">
+      <div class="kpi-num">11</div>
+      <div class="kpi-lbl">Semanas plan total</div>
+    </div>
+    <div class="kpi-card kpi-amber">
+      <div class="kpi-num">6</div>
+      <div class="kpi-lbl">Entregables Fase 1 ✓</div>
+    </div>
+    <div class="kpi-card kpi-red">
+      <div class="kpi-num">SMUS</div>
+      <div class="kpi-lbl">Próximo hito · Sem 5-6</div>
+    </div>
+  </div>
 
-    <div class="dp-grid">
-      <!-- Fases -->
-      <div class="dp-block">
-        <h4>Roadmap por fases</h4>
-        <ul class="phase-list">
-          <li class="done"><span class="badge">✓</span> Diseño y estructura Kiro · steering docs, specs, hooks · <b>TERMINADA</b></li>
-          <li class="active"><span class="badge">02</span> Generación de Hooks, MCP y scripts (nomenclatura, KMS, tags) · <b>EN CURSO</b></li>
-          <li class="pending"><span class="badge">03</span> Integración con esquemas AWS SMUS · DataZone → Java</li>
-          <li class="pending"><span class="badge">04</span> Pruebas de integración · generación del primer microservicio real</li>
-          <li class="pending"><span class="badge">05</span> Demo y presentación a usuarios finales (caso Aeropuertos)</li>
-          <li class="pending"><span class="badge">06</span> Validación de permisos y onboarding de todos los equipos</li>
-        </ul>
+  <!-- Timeline visual de fases -->
+  <div class="chart-card motor-timeline-card">
+    <h4 class="chart-title"><span class="chart-bullet" style="background:var(--magenta);box-shadow:0 0 8px var(--magenta)"></span>ROADMAP · LÍNEA DE TIEMPO MOTOR DE APIs (11 SEMANAS)</h4>
+
+    <!-- Timeline track -->
+    <div class="timeline-wrap">
+      <div class="timeline-track"></div>
+      <div class="timeline-progress"></div>
+
+      <div class="timeline-phases">
+        <!-- Fase 1 DONE -->
+        <div class="phase-node done">
+          <div class="phase-marker">
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12l5 5L20 7" fill="none" stroke="#021B3A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="phase-weeks">Sem 1-2</div>
+          <div class="phase-title">Fase 1<br>Diseño Kiro</div>
+          <div class="phase-desc">Steering docs · specs · hooks · permisos IAM</div>
+          <div class="phase-status status-done">✓ TERMINADA</div>
+        </div>
+
+        <!-- Fase 2 ACTIVE -->
+        <div class="phase-node active">
+          <div class="phase-marker">
+            <span class="pulse-ring"></span>
+            02
+          </div>
+          <div class="phase-weeks">Sem 3-4</div>
+          <div class="phase-title">Fase 2<br>Hooks · MCP · Scripts</div>
+          <div class="phase-desc">Agent Hooks · MCP GitHub/AWS · nomenclatura · KMS · tags</div>
+          <div class="phase-status status-active">● EN CURSO</div>
+        </div>
+
+        <!-- Fase 3 -->
+        <div class="phase-node pending">
+          <div class="phase-marker">03</div>
+          <div class="phase-weeks">Sem 5-6</div>
+          <div class="phase-title">Fase 3<br>Integración SMUS</div>
+          <div class="phase-desc">AWS DataZone · schemas Data Products → Java · assets</div>
+          <div class="phase-status status-pending">○ Siguiente</div>
+        </div>
+
+        <!-- Fase 4 -->
+        <div class="phase-node pending">
+          <div class="phase-marker">04</div>
+          <div class="phase-weeks">Sem 7-8</div>
+          <div class="phase-title">Fase 4<br>Pruebas E2E</div>
+          <div class="phase-desc">1er microservicio real · manifiestos K8s · registro Sensedia</div>
+          <div class="phase-status status-pending">○ Pendiente</div>
+        </div>
+
+        <!-- Fase 5 -->
+        <div class="phase-node pending">
+          <div class="phase-marker">05</div>
+          <div class="phase-weeks">Sem 9</div>
+          <div class="phase-title">Fase 5<br>Demo Aeropuertos</div>
+          <div class="phase-desc">Walkthrough · caso vuelos · recolección de feedback</div>
+          <div class="phase-status status-pending">○ Pendiente</div>
+        </div>
+
+        <!-- Fase 6 -->
+        <div class="phase-node pending">
+          <div class="phase-marker">06</div>
+          <div class="phase-weeks">Sem 10-11</div>
+          <div class="phase-title">Fase 6<br>Adopción</div>
+          <div class="phase-desc">Roles IAM · onboarding · guías · catálogo interno</div>
+          <div class="phase-status status-pending">○ Pendiente</div>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <!-- Entregables Fase 1 concluidos -->
-      <div class="dp-block">
-        <h4>Fase 1 · entregables concluidos ✓</h4>
-        <ul class="bullets" style="border-top:none;padding-top:0">
-          <li>Estructura completa de Kiro lista: steering docs, specs y hooks del ciclo de vida</li>
-          <li>Specs de las 8 fases del motor documentadas</li>
-          <li>Permisos IAM necesarios identificados y mapeados</li>
-          <li>Steering documents con reglas AMX formalizados</li>
-          <li>POC SMUS completada: acceso a producto, cuenta consumidora y Lambda (<i>Abisai</i>)</li>
-          <li>Proceso de accesos (<i>Nayeli</i>) y modelo de requerimientos (<i>Carlos</i>) en ejecución</li>
-        </ul>
-      </div>
-
-      <!-- Métricas -->
-      <div class="dp-block">
-        <h4>Indicadores clave</h4>
-        <div class="metric-stack">
-          <div class="metric">
-            <div class="k">Fase 1 · Análisis y Diseño</div>
-            <div class="v">100% <small style="color:var(--green)">· COMPLETADA</small></div>
+  <!-- Entregables + indicadores en doble columna -->
+  <div class="gpt-charts motor-detail">
+    <!-- Entregables Fase 1 ✓ -->
+    <div class="chart-card">
+      <h4 class="chart-title"><span class="chart-bullet" style="background:var(--green);box-shadow:0 0 8px var(--green)"></span>FASE 1 · ENTREGABLES CONCLUIDOS</h4>
+      <div class="deliverables-grid">
+        <div class="deliv-item">
+          <div class="deliv-icon">📐</div>
+          <div class="deliv-content">
+            <div class="deliv-title">Estructura Kiro</div>
+            <div class="deliv-desc">Steering docs, specs y hooks del ciclo de vida</div>
           </div>
-          <div class="metric">
-            <div class="k">Fase 2 · en curso</div>
-            <div class="v">HOOKS <small>· MCP · KMS · scripts</small></div>
+          <div class="deliv-check">✓</div>
+        </div>
+        <div class="deliv-item">
+          <div class="deliv-icon">📋</div>
+          <div class="deliv-content">
+            <div class="deliv-title">Specs 8 fases del motor</div>
+            <div class="deliv-desc">Documentación técnica completa</div>
           </div>
-          <div class="metric">
-            <div class="k">Fases totales motor</div>
-            <div class="v">06 <small>· 11 semanas E2E</small></div>
+          <div class="deliv-check">✓</div>
+        </div>
+        <div class="deliv-item">
+          <div class="deliv-icon">🔐</div>
+          <div class="deliv-content">
+            <div class="deliv-title">Permisos IAM</div>
+            <div class="deliv-desc">Identificación y mapeo por rol</div>
           </div>
-          <div class="metric">
-            <div class="k">Próximo hito</div>
-            <div class="v">SMUS <small>· Sem 5-6 · Fase 3 Integración</small></div>
+          <div class="deliv-check">✓</div>
+        </div>
+        <div class="deliv-item">
+          <div class="deliv-icon">📑</div>
+          <div class="deliv-content">
+            <div class="deliv-title">Steering docs AMX</div>
+            <div class="deliv-desc">Reglas institucionales formalizadas</div>
           </div>
+          <div class="deliv-check">✓</div>
+        </div>
+        <div class="deliv-item">
+          <div class="deliv-icon">☁️</div>
+          <div class="deliv-content">
+            <div class="deliv-title">POC SMUS</div>
+            <div class="deliv-desc">Cuenta consumidora + Lambda · <i>Abisai</i></div>
+          </div>
+          <div class="deliv-check">✓</div>
+        </div>
+        <div class="deliv-item">
+          <div class="deliv-icon">🔄</div>
+          <div class="deliv-content">
+            <div class="deliv-title">Proceso de accesos</div>
+            <div class="deliv-desc">Flujo con <i>Nayeli</i> y modelo de req. <i>Carlos</i></div>
+          </div>
+          <div class="deliv-check">✓</div>
         </div>
       </div>
     </div>
 
-    <div class="progress-bar">
-      <div class="bar"><div class="fill magenta" style="width:33%"></div></div>
-      <span class="bar-pct" style="color:var(--magenta-soft)">33%</span>
+    <!-- Progreso global + composición -->
+    <div class="chart-card">
+      <h4 class="chart-title"><span class="chart-bullet" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></span>PROGRESO GLOBAL DEL MOTOR</h4>
+
+      <!-- Barra de progreso grande -->
+      <div class="motor-progress-wrap">
+        <div class="motor-progress-label">
+          <span>Plan total · 11 semanas</span>
+          <span class="motor-progress-val">33%</span>
+        </div>
+        <div class="motor-progress-bar">
+          <div class="motor-progress-fill"></div>
+          <div class="motor-progress-markers">
+            <span class="pm-marker" style="left:18.2%" title="Fin Fase 1"></span>
+            <span class="pm-marker active" style="left:36.4%" title="Fin Fase 2"></span>
+            <span class="pm-marker" style="left:54.5%" title="Fin Fase 3"></span>
+            <span class="pm-marker" style="left:72.7%" title="Fin Fase 4"></span>
+            <span class="pm-marker" style="left:81.8%" title="Fin Fase 5"></span>
+            <span class="pm-marker" style="left:100%" title="Fin Fase 6"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini-gráfica de distribución -->
+      <div class="phase-distribution">
+        <div class="phase-bar-row">
+          <span class="phase-bar-lbl">Fase 1</span>
+          <div class="phase-bar-track"><div class="phase-bar-fill" style="width:100%;background:var(--green);box-shadow:0 0 8px var(--green)"></div></div>
+          <span class="phase-bar-pct" style="color:var(--green)">100%</span>
+        </div>
+        <div class="phase-bar-row">
+          <span class="phase-bar-lbl">Fase 2</span>
+          <div class="phase-bar-track"><div class="phase-bar-fill" style="width:35%;background:var(--magenta);box-shadow:0 0 8px var(--magenta)"></div></div>
+          <span class="phase-bar-pct" style="color:var(--magenta-soft)">35%</span>
+        </div>
+        <div class="phase-bar-row">
+          <span class="phase-bar-lbl">Fase 3</span>
+          <div class="phase-bar-track"><div class="phase-bar-fill" style="width:0%"></div></div>
+          <span class="phase-bar-pct" style="color:var(--text-dim)">0%</span>
+        </div>
+        <div class="phase-bar-row">
+          <span class="phase-bar-lbl">Fase 4</span>
+          <div class="phase-bar-track"><div class="phase-bar-fill" style="width:0%"></div></div>
+          <span class="phase-bar-pct" style="color:var(--text-dim)">0%</span>
+        </div>
+        <div class="phase-bar-row">
+          <span class="phase-bar-lbl">Fase 5</span>
+          <div class="phase-bar-track"><div class="phase-bar-fill" style="width:0%"></div></div>
+          <span class="phase-bar-pct" style="color:var(--text-dim)">0%</span>
+        </div>
+        <div class="phase-bar-row">
+          <span class="phase-bar-lbl">Fase 6</span>
+          <div class="phase-bar-track"><div class="phase-bar-fill" style="width:0%"></div></div>
+          <span class="phase-bar-pct" style="color:var(--text-dim)">0%</span>
+        </div>
+      </div>
     </div>
   </div>
 
