@@ -414,6 +414,257 @@
   .footer-strip .legend .d{width:8px;height:8px;border-radius:50%;display:inline-block}
   .footer-strip b{color:var(--cyan)}
 
+  /* ===== GPTACTIONS DASHBOARD ===== */
+  .gpt-kpi-row{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
+    margin-bottom:4px;
+  }
+  .kpi-card{
+    position:relative;
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    padding:18px 16px 16px;
+    border-radius:2px;
+    overflow:hidden;
+    transition:transform .2s ease;
+  }
+  .kpi-card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  }
+  .kpi-card:hover{transform:translateY(-2px)}
+  .kpi-red{border-color:rgba(255,93,108,0.4)}
+  .kpi-red::before{background:var(--red);box-shadow:0 0 10px var(--red)}
+  .kpi-green{border-color:rgba(73,230,162,0.4)}
+  .kpi-green::before{background:var(--green);box-shadow:0 0 10px var(--green)}
+  .kpi-amber{border-color:rgba(255,179,71,0.4)}
+  .kpi-amber::before{background:var(--amber);box-shadow:0 0 10px var(--amber)}
+  .kpi-cyan{border-color:rgba(79,211,255,0.4)}
+  .kpi-cyan::before{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+  .kpi-magenta{border-color:rgba(230,25,90,0.4)}
+  .kpi-magenta::before{background:var(--magenta);box-shadow:0 0 10px var(--magenta)}
+  .kpi-num{
+    font-family:'Orbitron',sans-serif;
+    font-size:38px;font-weight:900;
+    color:#fff;
+    line-height:1;
+    margin-bottom:8px;
+    text-shadow:0 0 18px currentColor;
+  }
+  .kpi-red .kpi-num{color:#fff;text-shadow:0 0 18px var(--red)}
+  .kpi-green .kpi-num{color:var(--green)}
+  .kpi-amber .kpi-num{color:var(--amber)}
+  .kpi-cyan .kpi-num{color:var(--cyan)}
+  .kpi-magenta .kpi-num{color:var(--magenta-soft)}
+  .kpi-lbl{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:1.5px;
+    color:var(--text-dim);
+    text-transform:uppercase;
+  }
+
+  /* Charts container */
+  .gpt-charts{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:1.35fr 1fr;
+    gap:18px;
+  }
+  .chart-card{
+    position:relative;
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:2px;
+    padding:18px 22px;
+  }
+  .chart-card::before{
+    content:"";position:absolute;top:-1px;left:-1px;width:20px;height:20px;
+    border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);
+  }
+  .chart-card::after{
+    content:"";position:absolute;bottom:-1px;right:-1px;width:20px;height:20px;
+    border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan);
+  }
+  .chart-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:12px;letter-spacing:2px;
+    color:#fff;
+    text-transform:uppercase;
+    margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+    font-weight:700;
+  }
+  .chart-bullet{
+    display:inline-block;width:10px;height:10px;
+  }
+
+  /* Bar chart (avance por GPTAction) */
+  .bars-chart{display:flex;flex-direction:column;gap:14px}
+  .bar-row{
+    display:grid;
+    grid-template-columns:105px 1fr 100px;
+    gap:14px;align-items:center;
+  }
+  .bar-name{
+    font-family:'Rajdhani',sans-serif;
+    font-size:14px;font-weight:600;
+    color:#fff;
+    text-align:right;
+  }
+  .bar-track{
+    position:relative;
+    height:26px;
+    background:rgba(79,211,255,0.06);
+    border:1px solid rgba(79,211,255,0.15);
+    overflow:hidden;
+  }
+  .bar-fill{
+    height:100%;
+    position:relative;
+    transition:width .6s ease;
+  }
+  .bar-fill.fill-green{
+    background:linear-gradient(90deg,var(--green),#8cffcf);
+    box-shadow:0 0 12px rgba(73,230,162,0.5);
+  }
+  .bar-fill.fill-amber{
+    background:linear-gradient(90deg,var(--amber),#ffd480);
+    box-shadow:0 0 12px rgba(255,179,71,0.5);
+  }
+  .bar-fill.fill-magenta{
+    background:linear-gradient(90deg,var(--magenta),var(--magenta-soft));
+    box-shadow:0 0 12px rgba(230,25,90,0.5);
+  }
+  .bar-fill.fill-cyan{
+    background:linear-gradient(90deg,var(--cyan),var(--cyan-soft));
+    box-shadow:0 0 12px rgba(79,211,255,0.5);
+  }
+  .bar-val{
+    position:absolute;
+    right:8px;top:50%;transform:translateY(-50%);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;font-weight:700;
+    color:#021B3A;
+    text-shadow:0 0 4px rgba(255,255,255,0.5);
+  }
+  .bar-chip{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9.5px;letter-spacing:1px;
+    padding:4px 8px;
+    text-align:center;
+    text-transform:uppercase;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .chip-ok{
+    background:rgba(73,230,162,0.12);
+    border:1px solid rgba(73,230,162,0.5);
+    color:var(--green);
+  }
+  .chip-test{
+    background:rgba(255,179,71,0.12);
+    border:1px solid rgba(255,179,71,0.5);
+    color:var(--amber);
+  }
+  .chip-progress{
+    background:rgba(230,25,90,0.12);
+    border:1px solid rgba(230,25,90,0.5);
+    color:var(--magenta-soft);
+  }
+
+  /* Donut chart */
+  .donut-wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;align-items:center;
+    min-height:210px;
+  }
+  .donut-svg{
+    width:100%;
+    max-width:210px;
+    height:auto;
+    margin:0 auto;
+    display:block;
+  }
+  .donut-legend{display:flex;flex-direction:column;gap:14px}
+  .legend-item{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;
+  }
+  .legend-dot{
+    width:12px;height:12px;border-radius:50%;
+    flex-shrink:0;
+  }
+  .legend-text{
+    color:#fff;font-weight:500;
+    flex:1;
+  }
+  .legend-count{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;color:var(--text-dim);font-weight:600;
+  }
+
+  /* Tabla resumen */
+  .gpt-summary-card{grid-column:1/-1;margin-top:6px}
+  .gpt-table{display:flex;flex-direction:column;gap:2px}
+  .gpt-row{
+    display:grid;
+    grid-template-columns:1.1fr 1.6fr 1.4fr 0.9fr 1fr;
+    gap:14px;
+    padding:10px 14px;
+    font-size:12.5px;
+    color:var(--text);
+    align-items:center;
+    background:rgba(6,21,48,0.4);
+    border-left:2px solid transparent;
+    transition:border-color .2s;
+  }
+  .gpt-row:hover{border-left-color:var(--cyan)}
+  .gpt-row-head{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:1.5px;
+    color:var(--cyan);text-transform:uppercase;
+    background:rgba(79,211,255,0.06);
+    border-bottom:1px solid rgba(79,211,255,0.2);
+    border-left:2px solid var(--cyan);
+    padding:8px 14px;
+    font-weight:600;
+  }
+  .gpt-name{
+    font-family:'Orbitron',sans-serif;
+    font-weight:700;
+    color:#fff;
+    font-size:13px;
+    letter-spacing:0.5px;
+  }
+  .mini-pill{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:1px;
+    padding:3px 8px;
+    font-weight:600;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .mp-ok{background:rgba(73,230,162,0.12);border:1px solid rgba(73,230,162,0.5);color:var(--green)}
+  .mp-test{background:rgba(255,179,71,0.12);border:1px solid rgba(255,179,71,0.5);color:var(--amber)}
+  .mp-progress{background:rgba(230,25,90,0.12);border:1px solid rgba(230,25,90,0.5);color:var(--magenta-soft)}
+
+  @media (max-width:1100px){
+    .gpt-kpi-row{grid-template-columns:repeat(3,1fr)}
+    .gpt-charts{grid-template-columns:1fr}
+    .gpt-row,.gpt-row-head{grid-template-columns:1fr 1fr;gap:8px}
+    .gpt-row span:nth-child(3),.gpt-row-head span:nth-child(3){display:none}
+    .gpt-row span:nth-child(4),.gpt-row-head span:nth-child(4){display:none}
+  }
+  @media (max-width:700px){
+    .gpt-kpi-row{grid-template-columns:repeat(2,1fr)}
+    .bar-row{grid-template-columns:80px 1fr 80px;gap:8px}
+    .donut-wrap{grid-template-columns:1fr}
+  }
+
   @media (max-width: 1100px){
     .grid{grid-template-columns:repeat(2,1fr)}
     .dp-card,.vuln-card{grid-column:span 2}
@@ -450,129 +701,192 @@
 
 <div class="grid">
 
-  <!-- ============ SECCIÓN 1: GPTACTIONS ============ -->
+  <!-- ============ SECCIÓN 1: GPTACTIONS DASHBOARD ============ -->
   <div class="section-title">
     GPTActions — Ingeniería de Acciones ChatGPT
-    <span class="count">06 FRENTES · 03 TERMINADOS</span>
+    <span class="count">06 FRENTES · 03 TERMINADOS · 02 EN PRUEBAS · 01 EN CURSO</span>
   </div>
 
-  <!-- AMBAR -->
-  <div class="card">
-    <div class="card-head">
-      <div class="card-title">GPTAction<br>AMBAR</div>
-      <div class="card-tag">FASE · 4</div>
+  <!-- KPIs fila superior -->
+  <div class="gpt-kpi-row">
+    <div class="kpi-card kpi-red">
+      <div class="kpi-num">6</div>
+      <div class="kpi-lbl">Total GPTActions</div>
     </div>
-    <span class="status-pill st-progress"><span class="dot"></span>En curso · Fase 4</span>
-    <div class="field"><span class="label">Owner</span><span class="val">M. Aurora Martínez · P. Anaid</span></div>
-    <div class="field"><span class="label">Ventana</span><span class="val">03-Feb → 12-Mar · ~1 mes</span></div>
-    <ul class="bullets">
-      <li>Fase 3 cerrada: esquema de ventas volados, queries personalizados y gráficas con labels X/Y</li>
-      <li>Iniciamos Fase 4 con 2 tablas adicionales desde <i>am.com</i></li>
-      <li>Pendiente optimización de queries (&gt;17 min → vista pre-transformada)</li>
-    </ul>
-    <div class="progress-bar">
-      <div class="bar"><div class="fill magenta" style="width:85%"></div></div>
-      <span class="bar-pct">85%</span>
+    <div class="kpi-card kpi-green">
+      <div class="kpi-num">3</div>
+      <div class="kpi-lbl">Terminados</div>
     </div>
-  </div>
-
-  <!-- CALLSIGN -->
-  <div class="card">
-    <div class="card-head">
-      <div class="card-title">GPTAction<br>CALLSIGN</div>
-      <div class="card-tag">FASE · 1 ✓</div>
+    <div class="kpi-card kpi-amber">
+      <div class="kpi-num">2</div>
+      <div class="kpi-lbl">En pruebas usuario</div>
     </div>
-    <span class="status-pill st-test"><span class="dot"></span>Fase 1 terminada · Pruebas usuario</span>
-    <div class="field"><span class="label">Owner</span><span class="val">C. Castillo · R. Borja</span></div>
-    <div class="field"><span class="label">Ventana</span><span class="val">12-Feb → 26-Feb · 3 sem</span></div>
-    <ul class="bullets">
-      <li>Identificación de fuentes y sesión de entendimiento concluidas</li>
-      <li>API de GPTAction integrada y en configuración final</li>
-      <li>Buena aceptación inicial, pendiente feedback formal</li>
-    </ul>
-    <div class="progress-bar">
-      <div class="bar"><div class="fill" style="width:85%"></div></div>
-      <span class="bar-pct">85%</span>
+    <div class="kpi-card kpi-cyan">
+      <div class="kpi-num">1</div>
+      <div class="kpi-lbl">En curso</div>
+    </div>
+    <div class="kpi-card kpi-magenta">
+      <div class="kpi-num">85<span style="font-size:22px">%</span></div>
+      <div class="kpi-lbl">Avance promedio</div>
     </div>
   </div>
 
-  <!-- SOBRECARGO -->
-  <div class="card">
-    <div class="card-head">
-      <div class="card-title">GPTAction<br>SOBRECARGO</div>
-      <div class="card-tag">FASE · 1 ✓</div>
+  <!-- Gráficas lado a lado -->
+  <div class="gpt-charts">
+
+    <!-- Gráfica de barras · avance por GPTAction -->
+    <div class="chart-card">
+      <h4 class="chart-title"><span class="chart-bullet" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></span>AVANCE POR GPTACTION</h4>
+      <div class="bars-chart">
+        <!-- Cada barra: label | bar container | % -->
+        <div class="bar-row">
+          <div class="bar-name">Cirium</div>
+          <div class="bar-track">
+            <div class="bar-fill fill-green" style="width:100%"></div>
+            <span class="bar-val">100%</span>
+          </div>
+          <div class="bar-chip chip-ok">✓ Terminado</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-name">Comisiones</div>
+          <div class="bar-track">
+            <div class="bar-fill fill-green" style="width:100%"></div>
+            <span class="bar-val">100%</span>
+          </div>
+          <div class="bar-chip chip-ok">✓ Terminado</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-name">Mantenimiento</div>
+          <div class="bar-track">
+            <div class="bar-fill fill-green" style="width:100%"></div>
+            <span class="bar-val">100%</span>
+          </div>
+          <div class="bar-chip chip-ok">✓ Terminado</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-name">AMBAR</div>
+          <div class="bar-track">
+            <div class="bar-fill fill-magenta" style="width:85%"></div>
+            <span class="bar-val">85%</span>
+          </div>
+          <div class="bar-chip chip-progress">Fase 4</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-name">Callsign</div>
+          <div class="bar-track">
+            <div class="bar-fill fill-amber" style="width:85%"></div>
+            <span class="bar-val">85%</span>
+          </div>
+          <div class="bar-chip chip-test">Pruebas</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-name">Sobrecargo</div>
+          <div class="bar-track">
+            <div class="bar-fill fill-amber" style="width:80%"></div>
+            <span class="bar-val">80%</span>
+          </div>
+          <div class="bar-chip chip-test">Pruebas</div>
+        </div>
+      </div>
     </div>
-    <span class="status-pill st-test"><span class="dot"></span>Fase 1 terminada · Pruebas usuario</span>
-    <div class="field"><span class="label">Owner</span><span class="val">Gustavo Vidal Martínez</span></div>
-    <div class="field"><span class="label">Ventana</span><span class="val">26-Feb → 11-Mar · 2 sem</span></div>
-    <ul class="bullets">
-      <li>Plan de trabajo ejecutado y conexión a Redshift liberada</li>
-      <li>API GPTAction implementada y en configuración</li>
-      <li>A la espera de feedback del usuario</li>
-    </ul>
-    <div class="progress-bar">
-      <div class="bar"><div class="fill" style="width:80%"></div></div>
-      <span class="bar-pct">80%</span>
+
+    <!-- Donut + leyenda -->
+    <div class="chart-card">
+      <h4 class="chart-title"><span class="chart-bullet" style="background:var(--magenta);box-shadow:0 0 8px var(--magenta)"></span>DISTRIBUCIÓN POR ESTATUS</h4>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 200 200" class="donut-svg">
+          <!-- Donut chart: 3 segmentos sobre circunferencia ~502.65 (r=80, c=2π·80) -->
+          <!-- Terminado 50% (251.33) · Pruebas 33.3% (167.55) · En curso 16.7% (83.77) -->
+          <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(79,211,255,0.08)" stroke-width="28"/>
+          <!-- Terminado (verde) 50% -->
+          <circle cx="100" cy="100" r="80" fill="none" stroke="#49e6a2" stroke-width="28"
+            stroke-dasharray="251.33 502.65" stroke-dashoffset="0"
+            transform="rotate(-90 100 100)" style="filter:drop-shadow(0 0 6px #49e6a2)"/>
+          <!-- Pruebas (ámbar) 33.3% -->
+          <circle cx="100" cy="100" r="80" fill="none" stroke="#ffb347" stroke-width="28"
+            stroke-dasharray="167.55 502.65" stroke-dashoffset="-251.33"
+            transform="rotate(-90 100 100)" style="filter:drop-shadow(0 0 6px #ffb347)"/>
+          <!-- En curso (magenta) 16.7% -->
+          <circle cx="100" cy="100" r="80" fill="none" stroke="#E6195A" stroke-width="28"
+            stroke-dasharray="83.77 502.65" stroke-dashoffset="-418.88"
+            transform="rotate(-90 100 100)" style="filter:drop-shadow(0 0 6px #E6195A)"/>
+          <text x="100" y="96" text-anchor="middle" fill="#fff" font-family="Orbitron" font-size="34" font-weight="900">6</text>
+          <text x="100" y="118" text-anchor="middle" fill="#9ab4cc" font-family="Rajdhani" font-size="11" letter-spacing="2">GPTACTIONS</text>
+        </svg>
+        <div class="donut-legend">
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#49e6a2;box-shadow:0 0 6px #49e6a2"></span>
+            <span class="legend-text">Terminado</span>
+            <span class="legend-count">3 · 50%</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#ffb347;box-shadow:0 0 6px #ffb347"></span>
+            <span class="legend-text">En pruebas</span>
+            <span class="legend-count">2 · 33%</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#E6195A;box-shadow:0 0 6px #E6195A"></span>
+            <span class="legend-text">En curso</span>
+            <span class="legend-count">1 · 17%</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- COMISIONES -->
-  <div class="card">
-    <div class="card-head">
-      <div class="card-title">GPTAction<br>COMISIONES</div>
-      <div class="card-tag">ENTREGA ✓</div>
-    </div>
-    <span class="status-pill st-ok"><span class="dot"></span>Terminado</span>
-    <div class="field"><span class="label">Owner</span><span class="val">G. Vidal · F. Herrera</span></div>
-    <div class="field"><span class="label">Ventana</span><span class="val">26-Feb → 05-Mar · 2 sem</span></div>
-    <ul class="bullets">
-      <li>Tablas y diccionario de datos recibidos el 25-Feb</li>
-      <li>Acceso a tablas liberado y validado</li>
-      <li>Entrega cerrada; pendiente agendar pruebas finales con usuario</li>
-    </ul>
-    <div class="progress-bar">
-      <div class="bar"><div class="fill green" style="width:100%"></div></div>
-      <span class="bar-pct" style="color:var(--green)">100%</span>
-    </div>
-  </div>
-
-  <!-- CIRIUM -->
-  <div class="card">
-    <div class="card-head">
-      <div class="card-title">GPTAction<br>CIRIUM</div>
-      <div class="card-tag">ENTREGA ✓</div>
-    </div>
-    <span class="status-pill st-risk"><span class="dot"></span>Terminado · Bloqueo por token</span>
-    <div class="field"><span class="label">Owner</span><span class="val">Israel Cruz</span></div>
-    <div class="field"><span class="label">Ventana</span><span class="val">03-Feb → 06-Mar · ~1 mes</span></div>
-    <ul class="bullets">
-      <li>Token caducado: se requiere re-autenticación con Cirium</li>
-      <li>Usuario final sin claridad sobre qué APIs de Cirium consumir</li>
-      <li>Requiere sesión de priorización con negocio</li>
-    </ul>
-    <div class="progress-bar">
-      <div class="bar"><div class="fill" style="width:95%"></div></div>
-      <span class="bar-pct">95%</span>
-    </div>
-  </div>
-
-  <!-- MANTENIMIENTO -->
-  <div class="card">
-    <div class="card-head">
-      <div class="card-title">GPT<br>MANTENIMIENTO</div>
-      <div class="card-tag">POC ✓</div>
-    </div>
-    <span class="status-pill st-ok"><span class="dot"></span>Terminado · POC cerrada</span>
-    <div class="field"><span class="label">Owner</span><span class="val">Equipo Mantenimiento</span></div>
-    <div class="field"><span class="label">Ventana</span><span class="val">Entrega concluida</span></div>
-    <ul class="bullets">
-      <li>Análisis de PDFs (&gt;25 GB) resuelto con muestra reducida para demostración</li>
-      <li>GPTAction generada y validada con el volumen acotado</li>
-      <li>Transformación de información completada</li>
-    </ul>
-    <div class="progress-bar">
-      <div class="bar"><div class="fill green" style="width:100%"></div></div>
-      <span class="bar-pct" style="color:var(--green)">100%</span>
+  <!-- Fila inferior: tabla resumen compacta -->
+  <div class="chart-card gpt-summary-card">
+    <h4 class="chart-title"><span class="chart-bullet" style="background:var(--amber);box-shadow:0 0 8px var(--amber)"></span>DETALLE · OWNERS, VENTANA Y ESTATUS</h4>
+    <div class="gpt-table">
+      <div class="gpt-row gpt-row-head">
+        <span>GPTAction</span>
+        <span>Owner</span>
+        <span>Ventana</span>
+        <span>Fase</span>
+        <span>Estatus</span>
+      </div>
+      <div class="gpt-row">
+        <span class="gpt-name">AMBAR</span>
+        <span>M. Aurora Martínez · P. Anaid</span>
+        <span>03-Feb → 12-Mar · ~1 mes</span>
+        <span>Fase 4</span>
+        <span><span class="mini-pill mp-progress">● En curso</span></span>
+      </div>
+      <div class="gpt-row">
+        <span class="gpt-name">Callsign</span>
+        <span>C. Castillo · R. Borja</span>
+        <span>12-Feb → 26-Feb · 3 sem</span>
+        <span>Fase 1 ✓</span>
+        <span><span class="mini-pill mp-test">● En pruebas</span></span>
+      </div>
+      <div class="gpt-row">
+        <span class="gpt-name">Sobrecargo</span>
+        <span>Gustavo Vidal Martínez</span>
+        <span>26-Feb → 11-Mar · 2 sem</span>
+        <span>Fase 1 ✓</span>
+        <span><span class="mini-pill mp-test">● En pruebas</span></span>
+      </div>
+      <div class="gpt-row">
+        <span class="gpt-name">Comisiones</span>
+        <span>G. Vidal · F. Herrera</span>
+        <span>26-Feb → 05-Mar · 2 sem</span>
+        <span>Entrega ✓</span>
+        <span><span class="mini-pill mp-ok">✓ Terminado</span></span>
+      </div>
+      <div class="gpt-row">
+        <span class="gpt-name">Cirium</span>
+        <span>Israel Cruz</span>
+        <span>03-Feb → 06-Mar · ~1 mes</span>
+        <span>Entrega ✓</span>
+        <span><span class="mini-pill mp-ok">✓ Terminado</span></span>
+      </div>
+      <div class="gpt-row">
+        <span class="gpt-name">Mantenimiento</span>
+        <span>Equipo Mantenimiento</span>
+        <span>POC cerrada</span>
+        <span>POC ✓</span>
+        <span><span class="mini-pill mp-ok">✓ Terminado</span></span>
+      </div>
     </div>
   </div>
 
