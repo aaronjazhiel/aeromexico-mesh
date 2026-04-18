@@ -943,6 +943,428 @@
     .timeline-phases{grid-template-columns:repeat(2,1fr)}
   }
 
+  /* ===== SENSEDIA · APIS AGRUPADAS POR DOMINIO ===== */
+  .api-groups{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    margin-top:14px;
+  }
+  .api-group{
+    background:rgba(6,21,48,0.5);
+    border:1px solid rgba(79,211,255,0.2);
+    border-left:3px solid var(--cyan);
+    padding:14px 16px;
+  }
+  .api-group-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+    padding-bottom:8px;
+    border-bottom:1px dashed rgba(79,211,255,0.2);
+  }
+  .api-group-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:12px;
+    font-weight:700;
+    color:var(--cyan);
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+  }
+  .api-group-count{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:1px;
+    color:var(--green);
+    background:rgba(73,230,162,0.1);
+    border:1px solid rgba(73,230,162,0.4);
+    padding:3px 10px;
+    font-weight:600;
+  }
+  .api-group-chips{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+  }
+
+  /* ===== IA CARDS XL (Casos de Uso expandidos) ===== */
+  .ia-usecases-expanded{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-top:6px;
+  }
+  .ia-card-xl{
+    position:relative;
+    background:
+      linear-gradient(160deg, rgba(230,25,90,0.1) 0%, rgba(6,21,48,0.7) 100%);
+    border:1px solid rgba(230,25,90,0.4);
+    border-top:3px solid var(--magenta);
+    padding:18px 16px 16px;
+    display:flex;
+    flex-direction:column;
+    min-height:200px;
+  }
+  .ia-card-xl::before{
+    content:"";position:absolute;top:-1px;left:-1px;width:18px;height:18px;
+    border-top:2px solid var(--magenta);border-left:2px solid var(--magenta);
+  }
+  .ia-card-xl::after{
+    content:"";position:absolute;bottom:-1px;right:-1px;width:18px;height:18px;
+    border-bottom:2px solid var(--magenta);border-right:2px solid var(--magenta);
+  }
+  .ia-card-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+  }
+  .ia-icon-xl{
+    font-size:32px;
+    filter:drop-shadow(0 0 10px var(--magenta));
+  }
+  .ia-num{
+    font-family:'Orbitron',sans-serif;
+    font-size:24px;
+    font-weight:900;
+    color:var(--magenta-soft);
+    opacity:0.6;
+    letter-spacing:1px;
+  }
+  .ia-title-xl{
+    font-family:'Orbitron',sans-serif;
+    font-size:13px;
+    font-weight:700;
+    color:#fff;
+    margin-bottom:10px;
+    line-height:1.35;
+    letter-spacing:0.3px;
+  }
+  .ia-desc-xl{
+    font-size:12px;
+    color:var(--text-dim);
+    line-height:1.45;
+    flex:1;
+    margin-bottom:14px;
+  }
+  .ia-status-xl{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:1.5px;
+    padding:5px 10px;
+    background:rgba(230,25,90,0.15);
+    border:1px solid var(--magenta);
+    color:var(--magenta-soft);
+    font-weight:600;
+    text-transform:uppercase;
+    align-self:flex-start;
+    animation:blink 1.8s ease-in-out infinite;
+  }
+
+  @media (max-width:1100px){
+    .api-group-chips{grid-template-columns:repeat(2,1fr)}
+    .ia-usecases-expanded{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:700px){
+    .api-group-chips{grid-template-columns:1fr}
+    .ia-usecases-expanded{grid-template-columns:1fr}
+  }
+
+  /* ===== SENSEDIA · APIS REGISTRADAS ===== */
+  .sensedia-card{
+    grid-column:1/-1;
+    background:
+      linear-gradient(135deg, rgba(79,211,255,0.08) 0%, transparent 50%),
+      var(--card-bg);
+    border-color:rgba(79,211,255,0.4);
+    padding:22px 26px;
+    position:relative;
+    border:1px solid rgba(79,211,255,0.4);
+    border-radius:2px;
+  }
+  .sensedia-card::before{
+    content:"";position:absolute;top:-1px;left:-1px;width:22px;height:22px;
+    border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);
+  }
+  .sensedia-card::after{
+    content:"";position:absolute;bottom:-1px;right:-1px;width:22px;height:22px;
+    border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan);
+  }
+  .sensedia-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:10px;
+    margin-top:14px;
+  }
+  .api-chip{
+    background:rgba(73,230,162,0.08);
+    border:1px solid rgba(73,230,162,0.4);
+    border-left:3px solid var(--green);
+    padding:10px 12px;
+    display:flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:#fff;
+    transition:all .2s;
+    font-weight:500;
+  }
+  .api-chip:hover{
+    background:rgba(73,230,162,0.14);
+    transform:translateX(3px);
+  }
+  .api-chip-check{
+    color:var(--green);
+    font-size:14px;font-weight:900;
+    text-shadow:0 0 8px var(--green);
+    flex-shrink:0;
+  }
+
+  /* Casos de uso IA */
+  .ia-usecases{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px dashed rgba(79,211,255,0.2);
+  }
+  .ia-card{
+    background:rgba(230,25,90,0.06);
+    border:1px solid rgba(230,25,90,0.35);
+    border-top:3px solid var(--magenta);
+    padding:14px;
+    position:relative;
+  }
+  .ia-card .ia-icon{
+    font-size:22px;
+    margin-bottom:8px;
+    filter:drop-shadow(0 0 6px var(--magenta));
+  }
+  .ia-card .ia-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:12px;font-weight:700;
+    color:#fff;
+    margin-bottom:6px;
+    line-height:1.3;
+  }
+  .ia-card .ia-status{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9.5px;letter-spacing:1px;
+    padding:3px 7px;
+    background:rgba(230,25,90,0.15);
+    border:1px solid var(--magenta);
+    color:var(--magenta-soft);
+    display:inline-block;
+    font-weight:600;
+    text-transform:uppercase;
+  }
+
+  /* ===== MÓDULOS PORTAL ===== */
+  .modules-grid{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:6px;
+  }
+  .module-card{
+    position:relative;
+    background:var(--card-bg);
+    border:1px solid rgba(79,211,255,0.3);
+    border-left:4px solid var(--amber);
+    padding:16px 18px;
+    transition:all .2s;
+  }
+  .module-card:hover{border-left-color:var(--cyan);transform:translateX(3px)}
+  .module-head{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    gap:12px;margin-bottom:10px;
+  }
+  .module-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:14px;font-weight:700;
+    color:#fff;
+    line-height:1.3;
+  }
+  .module-desc{
+    font-size:12.5px;
+    color:var(--text-dim);
+    line-height:1.45;
+    margin-bottom:10px;
+    font-style:italic;
+  }
+  .module-funcs{
+    font-size:12px;
+    color:var(--text);
+    line-height:1.5;
+    padding-left:16px;
+    position:relative;
+    border-top:1px dashed rgba(79,211,255,0.15);
+    padding-top:10px;
+  }
+  .module-funcs::before{
+    content:"⚙";
+    position:absolute;left:0;top:10px;
+    color:var(--cyan);
+  }
+
+  /* ===== PORTAL DE PORTALES · FASES VERTICALES ===== */
+  .portal-phases{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin-top:6px;
+  }
+  .portal-phase{
+    background:var(--card-bg);
+    border:1px solid rgba(79,211,255,0.3);
+    padding:16px 14px;
+    text-align:center;
+    position:relative;
+    transition:all .2s;
+  }
+  .portal-phase.active{
+    border-color:var(--magenta);
+    background:linear-gradient(160deg,rgba(230,25,90,0.12),rgba(6,21,48,0.7));
+    box-shadow:0 0 14px rgba(230,25,90,0.3);
+  }
+  .portal-phase-num{
+    font-family:'Orbitron',sans-serif;
+    font-size:28px;font-weight:900;
+    color:var(--text-dim);
+    line-height:1;
+    margin-bottom:6px;
+  }
+  .portal-phase.active .portal-phase-num{
+    color:var(--magenta-soft);
+    text-shadow:0 0 14px var(--magenta);
+  }
+  .portal-phase-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:11px;font-weight:700;
+    color:#fff;
+    margin-bottom:8px;
+    line-height:1.3;
+    min-height:30px;
+  }
+  .portal-phase.active .portal-phase-title{color:#fff}
+  .portal-phase-status{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;letter-spacing:1px;
+    padding:3px 6px;
+    font-weight:600;
+    display:inline-block;
+  }
+  .ps-active{
+    background:rgba(230,25,90,0.15);
+    border:1px solid var(--magenta);
+    color:var(--magenta-soft);
+  }
+  .ps-planned{
+    background:rgba(79,211,255,0.05);
+    border:1px solid rgba(79,211,255,0.25);
+    color:var(--text-dim);
+  }
+
+  /* ===== CHECKLIST ACTIVIDADES (Services Mesh, Migración) ===== */
+  .checklist-card{
+    grid-column:1/-1;
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    padding:18px 22px;
+    position:relative;
+  }
+  .checklist-card::before{
+    content:"";position:absolute;top:-1px;left:-1px;width:20px;height:20px;
+    border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);
+  }
+  .checklist-card::after{
+    content:"";position:absolute;bottom:-1px;right:-1px;width:20px;height:20px;
+    border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan);
+  }
+  .checklist-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px 18px;
+    margin-top:12px;
+  }
+  .check-item{
+    display:grid;
+    grid-template-columns:26px 1fr 110px;
+    gap:10px;align-items:center;
+    padding:10px 12px;
+    background:rgba(6,21,48,0.5);
+    border-left:3px solid;
+    transition:all .2s;
+  }
+  .check-item:hover{transform:translateX(3px)}
+  .check-item.done{border-left-color:var(--green);background:rgba(73,230,162,0.06)}
+  .check-item.progress{border-left-color:var(--magenta);background:rgba(230,25,90,0.06)}
+  .check-item.planned{border-left-color:var(--cyan-dim);opacity:0.75}
+  .check-mark{
+    font-family:'Orbitron',sans-serif;
+    font-size:15px;font-weight:900;
+    text-align:center;
+  }
+  .check-item.done .check-mark{color:var(--green);text-shadow:0 0 8px var(--green)}
+  .check-item.progress .check-mark{color:var(--magenta-soft);text-shadow:0 0 8px var(--magenta)}
+  .check-item.planned .check-mark{color:var(--text-dim)}
+  .check-text{
+    font-size:13px;
+    color:var(--text);
+    line-height:1.35;
+    font-weight:500;
+  }
+  .check-item.planned .check-text{color:var(--text-dim)}
+  .check-pill{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;letter-spacing:1px;
+    padding:3px 7px;
+    text-align:center;
+    font-weight:600;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .cp-done{background:rgba(73,230,162,0.12);border:1px solid rgba(73,230,162,0.5);color:var(--green)}
+  .cp-progress{background:rgba(230,25,90,0.12);border:1px solid rgba(230,25,90,0.5);color:var(--magenta-soft)}
+  .cp-planned{background:rgba(79,211,255,0.05);border:1px solid rgba(79,211,255,0.2);color:var(--text-dim)}
+
+  /* Summary pills del checklist */
+  .check-summary{
+    display:flex;gap:14px;margin-bottom:4px;flex-wrap:wrap;
+  }
+  .cs-pill{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:1px;
+    padding:5px 10px;
+    display:inline-flex;align-items:center;gap:6px;
+    font-weight:600;
+    text-transform:uppercase;
+  }
+  .cs-pill .cs-num{
+    font-family:'Orbitron',sans-serif;
+    font-size:14px;font-weight:900;
+  }
+  .cs-done{background:rgba(73,230,162,0.12);border:1px solid rgba(73,230,162,0.5);color:var(--green)}
+  .cs-progress{background:rgba(230,25,90,0.12);border:1px solid rgba(230,25,90,0.5);color:var(--magenta-soft)}
+  .cs-planned{background:rgba(79,211,255,0.05);border:1px solid rgba(79,211,255,0.3);color:var(--cyan)}
+
+  @media (max-width:1100px){
+    .sensedia-grid{grid-template-columns:repeat(2,1fr)}
+    .ia-usecases{grid-template-columns:repeat(2,1fr)}
+    .modules-grid{grid-template-columns:1fr}
+    .portal-phases{grid-template-columns:repeat(3,1fr)}
+    .checklist-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:700px){
+    .sensedia-grid{grid-template-columns:1fr}
+    .ia-usecases{grid-template-columns:1fr}
+    .portal-phases{grid-template-columns:1fr}
+  }
+
   @media (max-width: 1100px){
     .grid{grid-template-columns:repeat(2,1fr)}
     .dp-card,.vuln-card{grid-column:span 2}
@@ -974,6 +1396,7 @@
     <span>FASE MOTOR APIs <b>02 / 06</b></span>
     <span>OWNER <b>ARQ. API · AMX</b></span>
     <span>VULNS MICROSERVICES <b style="color:var(--red)">900</b></span>
+    <span>APIs SENSEDIA <b style="color:var(--green)">17</b></span>
   </div>
 </header>
 
@@ -1482,27 +1905,371 @@
       </div>
     </div>
 
-    <!-- Top CVEs y Top paquetes -->
-    <div class="vuln-summary">
-      <div class="vuln-block">
-        <h5>Top CVEs en microservicios</h5>
-        <ul>
-          <li><b>CVE-2026-33416</b> · libpng · <span style="color:var(--red)">16 hallazgos</span> · <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber)">EXPLOIT</span></li>
-          <li><b>CVE-2026-33636</b> · libpng · <span style="color:var(--red)">16 hallazgos</span></li>
-          <li><b>CVE-2025-15467</b> · OpenSSL · <span style="color:#ff8c50">15 hallazgos</span> · <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber)">EXPLOIT</span></li>
-          <li><b>CVE-2025-69419 / 69420 / 69421</b> · OpenSSL · <span style="color:#ff8c50">15 hallazgos c/u</span></li>
-          <li><b>CVE-2026-21945 / 21932</b> · OpenJDK 17 · <span style="color:var(--amber)">14 hallazgos c/u</span> · <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber)">EXPLOIT</span></li>
-        </ul>
+  <!-- ============ SECCIÓN 4: SENSEDIA · PLATAFORMA APIs ============ -->
+  <div class="section-title" style="margin-top:18px">
+    Plataforma Sensedia — APIs Publicadas
+    <span class="count">17 APIs REGISTRADAS · PUBLICACIÓN CONCLUIDA</span>
+  </div>
+
+  <!-- KPIs Sensedia -->
+  <div class="gpt-kpi-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi-card kpi-green">
+      <div class="kpi-num">17</div>
+      <div class="kpi-lbl">APIs publicadas</div>
+    </div>
+    <div class="kpi-card kpi-cyan">
+      <div class="kpi-num">17</div>
+      <div class="kpi-lbl">Registros terminados</div>
+    </div>
+    <div class="kpi-card kpi-magenta">
+      <div class="kpi-num">0</div>
+      <div class="kpi-lbl">En proceso / backlog</div>
+    </div>
+    <div class="kpi-card kpi-red">
+      <div class="kpi-num">100<span style="font-size:22px">%</span></div>
+      <div class="kpi-lbl">Avance de registro</div>
+    </div>
+  </div>
+
+  <!-- APIs como actividades concluidas -->
+  <div class="checklist-card">
+    <div class="check-summary">
+      <span class="cs-pill cs-done"><span class="cs-num">17</span> APIs REGISTRADAS ✓</span>
+    </div>
+    <div class="checklist-grid">
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-tmr7-api</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
       </div>
-      <div class="vuln-block">
-        <h5>Paquetes más afectados · plan de remediación</h5>
-        <ul>
-          <li><b>kernel</b> · 676 hallazgos — depende de actualización de base image EKS</li>
-          <li><b>libssl3 + libcrypto3</b> · 60 hallazgos — upgrade a OpenSSL 3.3.6-r0</li>
-          <li><b>libpng + libpng16-16</b> · 52 hallazgos — <i>apk/apt upgrade libpng</i> en Dockerfile</li>
-          <li><b>containerd</b> · 30 hallazgos — actualizar runtime de EKS</li>
-          <li><b>Acción</b>: rebuild masivo de las 30 imágenes (ECR) y gate Wiz en CI/CD antes de push</li>
-        </ul>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-tmr7-scheduler</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-tmr7-notification</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-api-app2.0</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-corporate-batch</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-am-uatp</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-api-health</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-api-pdi-portal</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-portal-request-web</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-portal-request-api</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-portal-request-jobs</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-portal-request-orquestador</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-auth-jwt</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-api-smartsuite</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-api-common</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-monitor</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Registro de API <b>eks-api-golden</b> en plataforma Sensedia</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECCIÓN 4B: CASOS DE USO IA (sección propia) ============ -->
+  <div class="section-title" style="margin-top:18px">
+    Casos de Uso de Inteligencia Artificial — Sensedia
+    <span class="count">04 CASOS · TODOS EN PROCESO</span>
+  </div>
+
+  <!-- KPIs IA -->
+  <div class="gpt-kpi-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi-card kpi-magenta">
+      <div class="kpi-num">4</div>
+      <div class="kpi-lbl">Casos de uso</div>
+    </div>
+    <div class="kpi-card kpi-cyan">
+      <div class="kpi-num">4</div>
+      <div class="kpi-lbl">En proceso</div>
+    </div>
+    <div class="kpi-card kpi-amber">
+      <div class="kpi-num">0</div>
+      <div class="kpi-lbl">Terminados</div>
+    </div>
+    <div class="kpi-card kpi-green">
+      <div class="kpi-num">MCP</div>
+      <div class="kpi-lbl">Protocolo principal · A2A · MCP</div>
+    </div>
+  </div>
+
+  <!-- Casos de uso IA en tarjetas más grandes -->
+  <div class="ia-usecases-expanded">
+
+    <div class="ia-card-xl">
+      <div class="ia-card-head">
+        <div class="ia-icon-xl">🤖</div>
+        <div class="ia-num">01</div>
+      </div>
+      <div class="ia-title-xl">Publicar un Agente en Sensedia</div>
+      <div class="ia-desc-xl">Registro y publicación de agentes de IA dentro de la plataforma Sensedia, expuestos como recursos consumibles.</div>
+      <div class="ia-status-xl">● EN PROCESO</div>
+    </div>
+
+    <div class="ia-card-xl">
+      <div class="ia-card-head">
+        <div class="ia-icon-xl">🔗</div>
+        <div class="ia-num">02</div>
+      </div>
+      <div class="ia-title-xl">Comunicación entre Agentes (A2A)</div>
+      <div class="ia-desc-xl">Orquestación agente-a-agente bajo el protocolo A2A — pipelines de razonamiento distribuido entre agentes.</div>
+      <div class="ia-status-xl">● EN PROCESO</div>
+    </div>
+
+    <div class="ia-card-xl">
+      <div class="ia-card-head">
+        <div class="ia-icon-xl">🧩</div>
+        <div class="ia-num">03</div>
+      </div>
+      <div class="ia-title-xl">Consumir un MCP Server</div>
+      <div class="ia-desc-xl">Integración de MCP servers externos como fuentes de contexto y herramientas para los agentes de la plataforma.</div>
+      <div class="ia-status-xl">● EN PROCESO</div>
+    </div>
+
+    <div class="ia-card-xl">
+      <div class="ia-card-head">
+        <div class="ia-icon-xl">🔄</div>
+        <div class="ia-num">04</div>
+      </div>
+      <div class="ia-title-xl">API publicada → expuesta como MCP</div>
+      <div class="ia-desc-xl">Ciclo de vida y sincronización automática: convertir APIs registradas en MCP endpoints reutilizables por agentes.</div>
+      <div class="ia-status-xl">● EN PROCESO</div>
+    </div>
+
+  </div>
+
+  <!-- ============ SECCIÓN 5: MÓDULOS API MANAGEMENT ============ -->
+  <div class="section-title" style="margin-top:18px">
+    Seguimiento en la implementación de los Módulos faltantes de Sensedia
+    <span class="count">04 MÓDULOS EN PROCESO</span>
+  </div>
+
+  <div class="modules-grid">
+    <div class="module-card">
+      <div class="module-head">
+        <div class="module-title">Catálogo de Productos API</div>
+        <span class="mini-pill mp-progress">● En proceso</span>
+      </div>
+      <div class="module-desc">Agrupación y visualización de APIs como API Products (Data, Agénticas, Analíticas)</div>
+      <div class="module-funcs">Registro OAS/RAML · agrupación por dominio · publicación en portal · versionado de contratos</div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-head">
+        <div class="module-title">Gestión de Suscripciones</div>
+        <span class="mini-pill mp-progress">● En proceso</span>
+      </div>
+      <div class="module-desc">Control de acceso a APIs mediante workflow de suscripción</div>
+      <div class="module-funcs">Planes (Free · Básico · Pro · Enterprise) · rate limits · workflow de aprobación · notificaciones · chargeback</div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-head">
+        <div class="module-title">Tablero Analítico de APIs</div>
+        <span class="mini-pill mp-progress">● En proceso</span>
+      </div>
+      <div class="module-desc">Dashboards de métricas operativas y consumo de APIs</div>
+      <div class="module-funcs">Métricas request/response · APIs más consumidas · tiempos de respuesta · tasa de error · integración con New Relic · alertas</div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-head">
+        <div class="module-title">Sandbox de APIs</div>
+        <span class="mini-pill mp-progress">● En proceso</span>
+      </div>
+      <div class="module-desc">Entorno de pruebas seguro para invocación de APIs</div>
+      <div class="module-funcs">Pruebas en ambiente aislado · visualización request/response · autenticación M2M · soporte a equipos de integración</div>
+    </div>
+  </div>
+
+  <!-- ============ SECCIÓN 6: PORTAL DE PORTALES ============ -->
+  <div class="section-title" style="margin-top:18px">
+    Portal de Portales — Fases de Implementación
+    <span class="count">FASE 1 EN PROCESO · 04 FASES PLANEADAS</span>
+  </div>
+
+  <div class="portal-phases">
+    <div class="portal-phase active">
+      <div class="portal-phase-num">01</div>
+      <div class="portal-phase-title">Diseño e<br>Implementación</div>
+      <div class="portal-phase-status ps-active">● EN PROCESO</div>
+    </div>
+    <div class="portal-phase">
+      <div class="portal-phase-num">02</div>
+      <div class="portal-phase-title">Maqueta de<br>Diseño</div>
+      <div class="portal-phase-status ps-planned">○ Planeado</div>
+    </div>
+    <div class="portal-phase">
+      <div class="portal-phase-num">03</div>
+      <div class="portal-phase-title">Coordinación de<br>Ingesta</div>
+      <div class="portal-phase-status ps-planned">○ Planeado</div>
+    </div>
+    <div class="portal-phase">
+      <div class="portal-phase-num">04</div>
+      <div class="portal-phase-title">Arquitectura y<br>Seguridad</div>
+      <div class="portal-phase-status ps-planned">○ Planeado</div>
+    </div>
+    <div class="portal-phase">
+      <div class="portal-phase-num">05</div>
+      <div class="portal-phase-title">Implementación<br>HTML</div>
+      <div class="portal-phase-status ps-planned">○ Planeado</div>
+    </div>
+  </div>
+
+  <!-- ============ SECCIÓN 7: SERVICES MESH ============ -->
+  <div class="section-title" style="margin-top:18px">
+    Capa de Services Mesh — Conectividad SMUS
+    <span class="count">03 CONCLUIDAS · 04 EN PROCESO</span>
+  </div>
+
+  <div class="checklist-card">
+    <div class="check-summary">
+      <span class="cs-pill cs-done"><span class="cs-num">3</span> CONCLUIDAS</span>
+      <span class="cs-pill cs-progress"><span class="cs-num">4</span> EN PROCESO</span>
+    </div>
+    <div class="checklist-grid">
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Accesos a plataforma SMUS</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Definición de estrategia de conexión</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item done">
+        <span class="check-mark">✓</span>
+        <span class="check-text">Acceso a la cuenta productora</span>
+        <span class="check-pill cp-done">Terminado</span>
+      </div>
+      <div class="check-item progress">
+        <span class="check-mark">●</span>
+        <span class="check-text">Implementación de la Lambda desde la cuenta productora</span>
+        <span class="check-pill cp-progress">En proceso</span>
+      </div>
+      <div class="check-item progress">
+        <span class="check-mark">●</span>
+        <span class="check-text">Pruebas unitarias</span>
+        <span class="check-pill cp-progress">En proceso</span>
+      </div>
+      <div class="check-item progress">
+        <span class="check-mark">●</span>
+        <span class="check-text">Documento de estándar de conectividad</span>
+        <span class="check-pill cp-progress">En proceso</span>
+      </div>
+      <div class="check-item progress">
+        <span class="check-mark">●</span>
+        <span class="check-text">Casos de uso para Satish Sarapuri</span>
+        <span class="check-pill cp-progress">En proceso</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECCIÓN 8: MIGRACIÓN DATA & ECOSYSTEM ============ -->
+  <div class="section-title" style="margin-top:18px">
+    Migración de Servicios — Data &amp; Ecosystem
+    <span class="count">01 EN PROCESO · 06 PLANEADAS</span>
+  </div>
+
+  <div class="checklist-card">
+    <div class="check-summary">
+      <span class="cs-pill cs-progress"><span class="cs-num">1</span> EN PROCESO</span>
+      <span class="cs-pill cs-planned"><span class="cs-num">6</span> PLANEADAS</span>
+    </div>
+    <div class="checklist-grid">
+      <div class="check-item progress">
+        <span class="check-mark">●</span>
+        <span class="check-text">Inventario de servicios a migrar</span>
+        <span class="check-pill cp-progress">En proceso</span>
+      </div>
+      <div class="check-item planned">
+        <span class="check-mark">○</span>
+        <span class="check-text">Solicitud de cuentas a migrar</span>
+        <span class="check-pill cp-planned">Planeado</span>
+      </div>
+      <div class="check-item planned">
+        <span class="check-mark">○</span>
+        <span class="check-text">Generación de cuentas a migrar</span>
+        <span class="check-pill cp-planned">Planeado</span>
+      </div>
+      <div class="check-item planned">
+        <span class="check-mark">○</span>
+        <span class="check-text">Plan de trabajo</span>
+        <span class="check-pill cp-planned">Planeado</span>
+      </div>
+      <div class="check-item planned">
+        <span class="check-mark">○</span>
+        <span class="check-text">Migración Fase 1 de servicios</span>
+        <span class="check-pill cp-planned">Planeado</span>
+      </div>
+      <div class="check-item planned">
+        <span class="check-mark">○</span>
+        <span class="check-text">Migración Fase 2 de servicios</span>
+        <span class="check-pill cp-planned">Planeado</span>
+      </div>
+      <div class="check-item planned">
+        <span class="check-mark">○</span>
+        <span class="check-text">Migración Fase 3 de servicios</span>
+        <span class="check-pill cp-planned">Planeado</span>
       </div>
     </div>
   </div>
